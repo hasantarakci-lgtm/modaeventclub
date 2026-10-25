@@ -507,6 +507,14 @@
       // "Hareketi azalt" ayarını açan ziyaretçilere animasyon gösterme
       disable: () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
     });
+
+    // Instagram gönderileri geç yüklenip sayfayı uzatır.
+    // Sayfa boyu değişince animasyon noktalarını yeniden hesapla, alttaki bölümler gizli kalmasın.
+    let zamanlayici;
+    new ResizeObserver(() => {
+      clearTimeout(zamanlayici);
+      zamanlayici = setTimeout(() => AOS.refresh(), 200);
+    }).observe(document.body);
   }
 </script>
 </body>
