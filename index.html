@@ -6,6 +6,8 @@
 <title>Moda Event Club — Denize yakın, insana sıcak</title>
 <meta name="description" content="Moda, Kadıköy'de dans, müzik, sohbet, yoga, pilates, koşu ve Hyrox buluşmaları.">
 <link rel="icon" href="logo.jpg">
+<!-- Kaydırma animasyonları: AOS (github.com/michalsnik/aos, MIT lisansı) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -472,6 +474,40 @@
         ${durum}
       </div>`);
   });
+</script>
+<!-- KAYDIRMA ANİMASYONLARI (AOS) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+  // Hangi parça nasıl belirsin? [seçici, animasyon, sıradakiler arası gecikme (ms)]
+  const animasyonlar = [
+    [".giris-izgara > div > *", "fade-up", 120],
+    [".giris-logo", "zoom-in", 0],
+    [".kart", "fade-up", 100],
+    [".baslik", "fade-up", 0],
+    [".brans", "fade-up", 150],
+    [".etkinlik", "fade-up", 80],
+    [".hakkimizda .metin", "fade-right", 0],
+    [".deger", "zoom-in", 100],
+    [".katil", "zoom-in", 0],
+    [".adim", "fade-up", 150]
+  ];
+  // Kütüphane yüklenemezse hiçbir şeyi gizleme, sayfa normal görünsün
+  if (window.AOS) {
+    animasyonlar.forEach(([secici, efekt, aralik]) => {
+      document.querySelectorAll(secici).forEach((el, i) => {
+        el.setAttribute("data-aos", efekt);
+        if (aralik) el.setAttribute("data-aos-delay", Math.min(i * aralik, 600));
+      });
+    });
+    AOS.init({
+      duration: 800,       // animasyon süresi
+      easing: "ease-out-cubic",
+      once: true,          // her parça sadece bir kez canlansın
+      offset: 60,
+      // "Hareketi azalt" ayarını açan ziyaretçilere animasyon gösterme
+      disable: () => window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    });
+  }
 </script>
 </body>
 </html>
