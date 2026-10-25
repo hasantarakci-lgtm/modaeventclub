@@ -19,6 +19,41 @@
 <meta property="og:image:alt" content="Moda Event Club logosu">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#14233f">
+<link rel="apple-touch-icon" href="logo.jpg">
+<!-- Google için kurum ve yaklaşan etkinlik bilgisi (sayfada görünmez) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "Moda Event Club",
+      "url": "https://hasantarakci-lgtm.github.io/modaeventclub/",
+      "logo": "https://hasantarakci-lgtm.github.io/modaeventclub/logo-orijinal.jpg",
+      "slogan": "Denize yakın, insana sıcak.",
+      "sameAs": ["https://www.instagram.com/modaeventclub/"]
+    },
+    {
+      "@type": "Event",
+      "name": "Balkabağında Çiçek Workshop",
+      "description": "Sonbaharı çiçeklerle kutlamaya hazır mısın? Moonli Floral Design ile kendi balkabağı aranjmanını tasarla; kahve, içecek ve pasta eşliğinde.",
+      "startDate": "2026-10-31T15:00:00+03:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "image": "https://hasantarakci-lgtm.github.io/modaeventclub/img/balkabagi-afis.jpg",
+      "location": {
+        "@type": "Place",
+        "name": "Nevada Coffee Moda",
+        "address": { "@type": "PostalAddress", "streetAddress": "Caferağa Mah., Moda Cd. No: 171/A", "addressLocality": "Kadıköy", "addressRegion": "İstanbul", "addressCountry": "TR" }
+      },
+      "organizer": [
+        { "@type": "Organization", "name": "Moda Event Club", "url": "https://hasantarakci-lgtm.github.io/modaeventclub/" },
+        { "@type": "Organization", "name": "Moonli Floral Design", "url": "https://www.instagram.com/moonliflowers/" }
+      ]
+    }
+  ]
+}
+</script>
 <!-- Kaydırma animasyonları: AOS (github.com/michalsnik/aos, MIT lisansı) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -126,6 +161,7 @@
   /* ---------- Branşlar ---------- */
   .branslar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
   .brans.atolye { background: linear-gradient(160deg, #a5528a, #6e2f55); }
+  @media (max-width: 860px) { .brans { min-height: 0; padding: 24px; } .brans .buyuk { font-size: 36px; } .brans h3 { font-size: 26px; } }
   @media (max-width: 1100px) and (min-width: 861px) { .branslar { grid-template-columns: repeat(2, 1fr); } }
   .brans {
     border-radius: 22px; padding: 30px; color: var(--krem);
@@ -143,110 +179,163 @@
     padding: 6px 12px; border-radius: 999px; font-size: 14px;
   }
 
-  /* ---------- Takvim ---------- */
-  .takvim-bolum { background: var(--kum); }
-  .etkinlikler { display: grid; gap: 12px; }
-  .etkinlik {
-    display: grid; grid-template-columns: 76px 1fr auto; gap: 20px; align-items: center;
-    background: var(--beyaz); border-radius: 16px; padding: 16px 20px;
-    box-shadow: 0 2px 10px rgba(20,35,63,.05);
-  }
-  .tarih {
-    text-align: center; background: var(--lacivert); color: var(--krem);
-    border-radius: 12px; padding: 8px 0;
-  }
-  .tarih .gun { font-family: "Fraunces", serif; font-size: 28px; font-weight: 700; line-height: 1; }
-  .tarih .ay { font-size: 12px; letter-spacing: .12em; font-weight: 600; }
-  .etkinlik h3 { font-family: "Inter", sans-serif; font-size: 18px; font-weight: 700; }
-  .etkinlik .detay { color: var(--soluk); font-size: 14px; }
+  /* ---------- Takvim: "Gün batımından denize" ---------- */
   .durum { font-size: 12px; font-weight: 700; letter-spacing: .08em; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
   .durum.yakinda { background: #e3f0f4; color: #2c5f75; }
   .durum.bugun { background: var(--gunbatimi); color: var(--beyaz); }
   .durum.gecti { background: #eceae5; color: var(--soluk); }
-  .etkinlik.gecmis { opacity: .55; }
-  .etkinlik.gecmis .tarih { background: var(--soluk); }
   .not { color: var(--soluk); font-size: 14px; margin-top: 18px; }
 
   /* Kategori renkleri (Program kartlarıyla aynı) */
-  .kat-atolye   { --kat: #8e3f6e; }
-  .kat-wellness { --kat: #3f7f97; }
-  .kat-hareket  { --kat: #1d3157; }
-  .kat-sosyal   { --kat: #d9663a; }
-  .etkinlik[class*="kat-"] .tarih { background: var(--kat); }
-  .etkinlik[class*="kat-"] { border-left: 5px solid var(--kat); }
-  .kat-etiket { color: var(--kat); font-weight: 700; margin-right: 4px; }
-  .etkinlik h3 { margin-bottom: 2px; }
+  .kat-atolye   { --kat: #9b3f78; }
+  .kat-wellness { --kat: #2f8aa3; }
+  .kat-hareket  { --kat: #1d3a6e; }
+  .kat-sosyal   { --kat: #e0612f; }
 
-  .takvim-arac { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 22px; }
-  .filtreler, .gorunum-sec { display: flex; gap: 8px; flex-wrap: wrap; }
-  .filtre, .gorunum {
-    font: 600 14px "Inter", sans-serif; cursor: pointer; border-radius: 999px; padding: 9px 16px;
-    background: var(--beyaz); color: var(--yazi); border: 2px solid transparent; min-height: 40px;
-    box-shadow: 0 2px 8px rgba(20,35,63,.06); transition: background .15s, color .15s, border-color .15s;
+  .takvim-bolum {
+    position: relative; overflow: hidden; padding: 120px 0 130px;
+    background:
+      radial-gradient(circle at 95% 4%, rgba(255,214,120,.95) 0 70px, rgba(255,190,110,.45) 71px 120px, transparent 220px),
+      linear-gradient(180deg, #ffe3cf 0%, #ffd0b3 22%, #f8c7b6 42%, #d7e4ea 72%, #9fcbd8 100%);
   }
-  .filtre[aria-pressed="true"] { background: var(--kat, var(--lacivert)); color: var(--beyaz); }
-  /* Renk açıklaması: ay takvimindeki noktalarla aynı renk */
+  .takvim-bolum::after { /* deniz parıltısı */
+    content: ""; position: absolute; inset: auto 0 0 0; height: 46%;
+    background: repeating-linear-gradient(170deg, rgba(255,255,255,.18) 0 2px, transparent 2px 18px);
+    pointer-events: none;
+  }
+  .takvim-bolum > .kap { position: relative; z-index: 1; }
+  .takvim-dalga { position: absolute; left: 0; width: 100%; height: 70px; z-index: 1; }
+  .takvim-dalga.ust { top: -1px; }
+  .takvim-dalga.alt { bottom: -1px; }
+  .takvim-bolum .baslik p { color: #4b4f5c; }
+  .takvim-bolum .ust-etiket { color: #c24e1f; }
+  .takvim-bolum h2 { color: var(--lacivert); }
+
+  /* Filtreler */
+  .takvim-arac { display: flex; justify-content: center; margin-bottom: 22px; }
+  .filtreler { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+  .filtre {
+    font: 600 14px "Inter", sans-serif; cursor: pointer; border-radius: 999px; padding: 10px 18px;
+    background: rgba(255,255,255,.75); color: var(--yazi); border: 2px solid rgba(255,255,255,.9); min-height: 42px;
+    backdrop-filter: blur(6px); box-shadow: 0 4px 14px rgba(20,35,63,.08);
+    transition: transform .15s, background .15s, color .15s;
+  }
+  .filtre:hover { transform: translateY(-2px); }
+  .filtre[aria-pressed="true"] { background: var(--kat, var(--lacivert)); color: var(--beyaz); border-color: transparent; box-shadow: 0 8px 20px rgba(20,35,63,.22); }
   .filtre[class*="kat-"]::before {
-    content: ""; display: inline-block; width: 9px; height: 9px; border-radius: 50%;
-    background: var(--kat); margin-right: 6px; vertical-align: 1px;
+    content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%;
+    background: var(--kat); margin-right: 7px; vertical-align: 0;
   }
   .filtre[class*="kat-"][aria-pressed="true"]::before { background: var(--beyaz); }
-  .filtre:not([aria-pressed="true"]):hover { border-color: var(--kat, var(--lacivert)); }
-  .gorunum-sec { background: rgba(20,35,63,.08); padding: 4px; border-radius: 999px; }
-  .gorunum { box-shadow: none; background: transparent; }
-  .gorunum[aria-pressed="true"] { background: var(--beyaz); box-shadow: 0 2px 8px rgba(20,35,63,.12); }
 
-  .ay-grup { font-family: "Fraunces", serif; font-size: 22px; color: var(--lacivert); margin: 14px 0 2px; }
-  .ay-grup:first-child { margin-top: 0; }
-  .bos-not { color: var(--soluk); background: var(--beyaz); padding: 18px; border-radius: 14px; margin: 0; }
-  .liste-dugme { justify-self: center; margin-top: 6px; color: var(--lacivert); cursor: pointer; background: transparent; font: inherit; font-weight: 600; }
-  .gecmis-dugme {
-    justify-self: center; margin-top: 6px; background: transparent; border: 0; cursor: pointer;
-    color: var(--soluk); font: 600 14px "Inter", sans-serif; padding: 10px 14px; text-decoration: underline;
+  /* Takvim kartı */
+  .ay-kart {
+    background: var(--beyaz); border-radius: 30px; overflow: hidden;
+    box-shadow: 0 30px 70px rgba(20,35,63,.22), 0 0 0 6px rgba(255,255,255,.45);
   }
-  .gecmis-liste { display: grid; gap: 12px; }
-
-  /* Ay görünümü */
-  .ay-ust { display: flex; align-items: center; justify-content: center; gap: 18px; margin-bottom: 14px; }
-  .ay-ust h3 { font-family: "Fraunces", serif; font-size: 28px; color: var(--lacivert); min-width: 190px; text-align: center; margin: 0; }
+  .ay-ust {
+    position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px;
+    padding: 22px 26px; color: var(--beyaz); overflow: hidden;
+    background: linear-gradient(115deg, #f06a36 0%, #f59a4a 35%, #e9a77a 55%, #3f8fb0 85%, #1d4f7a 100%);
+  }
+  .ay-ust::before { /* başlıktaki güneş */
+    content: ""; position: absolute; left: 50%; top: 115%; width: 260px; height: 260px; transform: translateX(-50%);
+    border-radius: 50%; background: radial-gradient(circle, rgba(255,232,150,.75), rgba(255,200,120,0) 70%);
+  }
+  .ay-ust-orta { position: relative; text-align: center; }
+  .ay-ust h3 { font-family: "Fraunces", serif; font-size: clamp(26px, 4vw, 38px); margin: 0; letter-spacing: .01em; text-shadow: 0 2px 12px rgba(0,0,0,.18); }
+  .ay-ozet { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 8px; font-size: 13px; font-weight: 600; }
+  .ay-ozet span { background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.35); padding: 3px 10px; border-radius: 999px; }
   .ay-ok {
-    width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer; font-size: 26px; line-height: 1;
-    background: var(--beyaz); color: var(--lacivert); box-shadow: 0 2px 8px rgba(20,35,63,.1);
+    position: relative; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; font-size: 28px; line-height: 1;
+    background: rgba(255,255,255,.22); color: var(--beyaz); border: 2px solid rgba(255,255,255,.55);
+    transition: background .15s, transform .15s;
   }
+  .ay-ok:hover:not(:disabled) { background: rgba(255,255,255,.4); transform: scale(1.06); }
   .ay-ok:disabled { opacity: .3; cursor: default; }
-  .ay-izgara {
-    display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px;
-    background: var(--beyaz); padding: 12px; border-radius: 20px; box-shadow: var(--golge); margin-bottom: 18px;
-  }
-  .gun-adi { text-align: center; font-size: 12px; font-weight: 700; letter-spacing: .06em; color: var(--soluk); padding: 4px 0; }
+
+  .ay-izgara { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; padding: 16px 18px 18px; }
+  .gun-adi { text-align: center; font-size: 12px; font-weight: 800; letter-spacing: .1em; color: #8a8f9c; padding: 2px 0 4px; text-transform: uppercase; }
+  .gun-adi.hafta-sonu { color: var(--gunbatimi); }
   .gun-hucre {
-    min-height: 96px; border: 1px solid #eee7da; border-radius: 12px; background: var(--krem);
-    padding: 6px; display: flex; flex-direction: column; gap: 3px; align-items: stretch; text-align: left;
-    font: inherit; color: inherit; min-width: 0;
+    position: relative; min-height: 108px; border: 1px solid #f1e9de; border-radius: 16px; background: #fffaf4;
+    padding: 8px; display: flex; flex-direction: column; gap: 4px; align-items: stretch; text-align: left;
+    font: inherit; color: inherit; min-width: 0; transition: transform .15s, box-shadow .15s, border-color .15s;
   }
+  .gun-hucre.hafta-sonu { background: #f1f8fb; border-color: #e1eff5; }
   .gun-hucre.bos { background: transparent; border-color: transparent; }
-  .gun-hucre.dolu { cursor: pointer; background: var(--beyaz); }
-  .gun-hucre.dolu:hover { border-color: var(--gunbatimi); }
-  .gun-hucre.gecmis-gun { opacity: .45; }
-  .gun-hucre.bugun { border: 2px solid var(--gunbatimi); }
-  .gun-hucre.secili { outline: 3px solid var(--lacivert); outline-offset: -1px; }
-  .g-no { font-weight: 700; font-size: 14px; }
-  .g-etiket {
-    background: var(--kat); color: var(--beyaz); font-size: 11px; font-weight: 600; line-height: 1.25;
-    padding: 3px 6px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  .gun-hucre.dolu { cursor: pointer; background: var(--beyaz); border-color: #f3dccb; box-shadow: 0 3px 10px rgba(232,119,74,.08); }
+  .gun-hucre.dolu.hafta-sonu { border-color: #cfe5ee; box-shadow: 0 3px 10px rgba(63,143,176,.1); }
+  .gun-hucre.dolu:hover { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(20,35,63,.14); }
+  .gun-hucre.gecmis-gun { filter: saturate(.35); opacity: .55; }
+  .gun-hucre.bugun { border: 2px solid transparent; background: linear-gradient(#fff, #fff) padding-box, linear-gradient(135deg, #f8b13c, #e8774a, #3f8fb0) border-box; opacity: 1; filter: none; }
+  .gun-hucre.bugun::after {
+    content: "☀️ Bugün"; position: absolute; top: -10px; right: 8px; font-size: 11px; font-weight: 700;
+    background: linear-gradient(90deg, #f8b13c, #e8774a); color: var(--beyaz); padding: 2px 8px; border-radius: 999px;
+    box-shadow: 0 4px 10px rgba(232,119,74,.35);
   }
+  .gun-hucre.secili { box-shadow: 0 0 0 3px var(--lacivert), 0 12px 24px rgba(20,35,63,.18); transform: translateY(-3px); }
+  .g-no { font-family: "Fraunces", serif; font-weight: 700; font-size: 18px; line-height: 1; color: var(--lacivert); }
+  .g-etiket {
+    display: block; background: color-mix(in srgb, var(--kat) 14%, white); color: var(--kat);
+    border-left: 3px solid var(--kat); font-size: 11.5px; font-weight: 700; line-height: 1.3;
+    padding: 3px 6px; border-radius: 7px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .g-ikonlar { display: none; }
+
+  /* Seçilen günün etkinlikleri */
+  .gun-detay { padding: 4px 18px 22px; }
+  .gun-detay-baslik { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 4px 4px 12px; }
+  .gun-detay-baslik h3 { font-family: "Fraunces", serif; font-size: 24px; color: var(--lacivert); margin: 0; }
+  .gun-detay-baslik span { color: var(--soluk); font-size: 14px; }
+  .g-kartlar { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .g-etk {
+    display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: center; position: relative;
+    padding: 16px; border-radius: 18px; overflow: hidden;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--kat) 10%, white), #fff 70%);
+    border: 1px solid color-mix(in srgb, var(--kat) 22%, white);
+  }
+  .g-etk-ikon {
+    width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; font-size: 28px;
+    background: var(--kat); box-shadow: 0 8px 16px color-mix(in srgb, var(--kat) 35%, transparent);
+  }
+  .g-etk-ust { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+  .g-etk h4 { font-family: "Inter", sans-serif; font-size: 17px; font-weight: 800; color: var(--lacivert); margin: 0; line-height: 1.3; }
+  .g-etk-meta { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; color: #4b4f5c; }
+  .g-etk-meta span { background: rgba(255,255,255,.85); border: 1px solid #eee3d6; padding: 2px 9px; border-radius: 999px; }
+  .g-etk .durum { flex: 0 0 auto; font-size: 11px; padding: 4px 10px; }
+  /* Yaklaşan etkinlik günleri: sıcak gün batımı tonu */
+  .gun-hucre.dolu:not(.gecmis-gun) { background: linear-gradient(180deg, #fff 0%, #fff4ea 100%); border-color: #f5c9a8; }
+  .gun-hucre.dolu.hafta-sonu:not(.gecmis-gun) { background: linear-gradient(180deg, #fff 0%, #eaf5fa 100%); border-color: #b9dbe8; }
+  .g-etk.gecmis { filter: saturate(.3); opacity: .7; }
+  .bos-not { color: var(--soluk); background: #fffaf4; padding: 18px; border-radius: 14px; margin: 0; text-align: center; }
+  .takvim-bolum .not { color: #2c4a5a; text-align: center; }
+
   @media (max-width: 700px) {
-    .takvim-arac { flex-direction: column; align-items: stretch; }
-    .filtreler { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+    .takvim-bolum {
+      padding: 90px 0 100px;
+      background:
+        radial-gradient(circle at 92% 5%, rgba(255,214,120,.9) 0 34px, rgba(255,190,110,.35) 35px 60px, transparent 110px),
+        linear-gradient(180deg, #ffe3cf 0%, #ffd0b3 22%, #f8c7b6 42%, #d7e4ea 72%, #9fcbd8 100%);
+    }
+    .filtreler { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding: 4px 2px 8px; scrollbar-width: none; }
     .filtre { flex: 0 0 auto; }
-    .gorunum-sec { align-self: center; }
-    .ay-izgara { padding: 8px; gap: 4px; }
-    .gun-hucre { min-height: 52px; padding: 4px; align-items: center; }
-    /* Telefonda yazı yerine renkli nokta */
-    .g-etiket { font-size: 0; width: 8px; height: 8px; padding: 0; border-radius: 50%; display: inline-block; }
-    .gun-hucre.dolu { flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: flex-start; }
-    .gun-hucre .g-no { width: 100%; text-align: center; }
-    .ay-ust h3 { font-size: 22px; min-width: 150px; }
+    .ay-kart { border-radius: 24px; }
+    .ay-ust { padding: 16px 12px; gap: 8px; }
+    .ay-ok { width: 40px; height: 40px; font-size: 24px; }
+    .ay-ozet { font-size: 11.5px; gap: 5px; }
+    .ay-izgara { gap: 4px; padding: 10px 8px 12px; }
+    .gun-adi { font-size: 10px; letter-spacing: .04em; }
+    .gun-hucre { min-height: 60px; padding: 5px 2px; align-items: center; border-radius: 12px; gap: 2px; }
+    .g-no { font-size: 15px; }
+    .g-etiket { display: none; }
+    /* Telefonda yazı yerine etkinlik simgeleri */
+    .g-ikonlar { display: block; font-size: 13px; line-height: 1.1; text-align: center; letter-spacing: -1px; }
+    .gun-hucre.bugun::after { content: "☀️"; top: -9px; right: -4px; padding: 1px 4px; }
+    .gun-detay { padding: 2px 10px 16px; }
+    .g-kartlar { grid-template-columns: 1fr; }
+    .g-etk { grid-template-columns: 48px 1fr; padding: 14px; }
+    .g-etk-ikon { width: 48px; height: 48px; font-size: 24px; border-radius: 14px; }
   }
 
   /* ---------- Hakkımızda ---------- */
@@ -365,7 +454,15 @@
   .hyrox-izgara figcaption { top: 12px; bottom: auto; }
   .nefes-foto { aspect-ratio: 3 / 4; }
   @media (max-width: 860px) {
-    .hyrox-izgara { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+    /* Telefonda anı galerileri: parmakla yana kaydırılır */
+    .hyrox-izgara {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 76%;
+      overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+      margin: 0 -20px; padding: 4px 20px 12px; gap: 14px; align-items: start; scrollbar-width: none;
+    }
+    .hyrox-izgara::-webkit-scrollbar { display: none; }
+    .hyrox-izgara > * { scroll-snap-align: center; }
+    .kaydir-ipucu { display: block; }
   }
 
   /* ---------- Fotoğraflar ---------- */
@@ -399,6 +496,7 @@
   }
 
   /* ---------- Konum ve ortaklar ---------- */
+  .konum-bolum { background: linear-gradient(180deg, var(--kum) 0%, #e6eff2 100%); }
   .konum-izgara { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: stretch; }
   .harita { border-radius: 20px; overflow: hidden; box-shadow: var(--golge); min-height: 340px; background: var(--beyaz); }
   .harita iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
@@ -444,8 +542,55 @@
     display: grid; place-items: center; font-weight: 700; margin: 0 auto 8px;
   }
 
-  footer { padding: 40px 0; color: var(--soluk); font-size: 14px; }
-  .alt-bilgi { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+  /* ---------- Kaydırma ipucu (sadece telefonda) ---------- */
+  .kaydir-ipucu { display: none; text-align: center; font-size: 13px; color: var(--soluk); margin: 2px 0 0; }
+  .one-cikan .kaydir-ipucu { color: rgba(248,243,234,.7); }
+  @media (max-width: 860px) { .kaydir-ipucu { display: block; } }
+
+  /* ---------- Rakamlarla ---------- */
+  .rakamlar {
+    display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 46px; overflow: hidden;
+    border-radius: 24px; color: var(--beyaz);
+    background: linear-gradient(115deg, #f06a36 0%, #f59a4a 35%, #e9a77a 55%, #3f8fb0 85%, #1d4f7a 100%);
+    box-shadow: 0 18px 40px rgba(232,119,74,.25);
+  }
+  .rakam { padding: 26px 18px; text-align: center; border-right: 1px solid rgba(255,255,255,.25); }
+  .rakam:last-child { border-right: 0; }
+  .rakam b { display: block; font-family: "Fraunces", serif; font-size: clamp(36px, 5vw, 52px); line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,.15); }
+  .rakam span { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; opacity: .95; }
+  @media (max-width: 700px) {
+    .rakamlar { grid-template-columns: 1fr 1fr; }
+    .rakam:nth-child(2) { border-right: 0; }
+    .rakam:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.25); }
+    .rakam { padding: 20px 12px; }
+  }
+
+  /* ---------- Alt bilgi ---------- */
+  .altbilgi { position: relative; background: var(--lacivert); color: rgba(248,243,234,.85); padding: 100px 0 26px; margin-top: 30px; font-size: 14px; }
+  .alt-dalga { position: absolute; top: -1px; left: 0; width: 100%; height: 60px; }
+  .altbilgi a { text-decoration: none; }
+  .altbilgi a:hover { color: var(--altin); }
+  .alt-izgara { display: grid; grid-template-columns: 1.3fr 1fr 1.3fr; gap: 30px; align-items: start; }
+  .alt-marka { display: flex; gap: 14px; align-items: center; }
+  .alt-marka img { width: 64px; height: 64px; border-radius: 50%; border: 2px solid var(--altin); }
+  .alt-marka b { display: block; font-family: "Fraunces", serif; font-size: 22px; color: var(--krem); }
+  .alt-linkler, .alt-iletisim { display: flex; flex-direction: column; gap: 8px; }
+  .alt-linkler b, .alt-iletisim b { color: var(--altin); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 4px; }
+  .alt-son {
+    display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    margin-top: 34px; padding-top: 18px; border-top: 1px solid rgba(248,243,234,.15); font-size: 13px; opacity: .8;
+  }
+  @media (max-width: 760px) { .alt-izgara { grid-template-columns: 1fr; gap: 24px; } .altbilgi { padding-top: 80px; } }
+
+  /* ---------- Yukarı çık düğmesi ---------- */
+  .yukari {
+    position: fixed; right: 18px; bottom: 18px; z-index: 60; width: 48px; height: 48px; border-radius: 50%;
+    display: grid; place-items: center; text-decoration: none; font-size: 22px; font-weight: 700;
+    color: var(--beyaz); background: linear-gradient(135deg, #f8b13c, #e8774a);
+    box-shadow: 0 10px 24px rgba(232,119,74,.4); opacity: 0; transform: translateY(16px); pointer-events: none;
+    transition: opacity .25s, transform .25s;
+  }
+  .yukari.gorunur { opacity: 1; transform: none; pointer-events: auto; }
 
   /* ---------- Telefon ---------- */
   @media (max-width: 860px) {
@@ -489,12 +634,12 @@
     </a>
     <button class="hamburger" aria-label="Menü" onclick="document.querySelector('.linkler').classList.toggle('acik')">☰</button>
     <nav class="linkler">
-      <a href="#program">Program</a>
       <a href="#takvim">Takvim</a>
+      <a href="#program">Program</a>
+      <a href="#nefes">Anılar</a>
       <a href="#hakkimizda">Hakkımızda</a>
-      <a href="#galeri">Galeri</a>
       <a href="#konum">Konum</a>
-      <a href="#katil" class="dugme">Etkinliğe Katıl</a>
+      <a href="#yaklasan" class="dugme">Etkinliğe Katıl</a>
     </nav>
   </div>
 </header>
@@ -507,7 +652,7 @@
     <h1>Denize yakın,<br><em>insana sıcak.</em></h1>
     <p class="alt">Tanışmak, paylaşmak ve birlikte vakit geçirmek için Moda'dayız. Dans gecelerinden yogaya, quiz akşamlarından Hyrox antrenmanına kadar Moda'da birlikteyiz.</p>
     <div class="dugmeler">
-      <a href="#katil" class="dugme">Etkinliğe Katıl</a>
+      <a href="#yaklasan" class="dugme">🎃 Sıradaki etkinlik</a>
       <a href="#takvim" class="dugme cizgili">Etkinlik Takvimi</a>
     </div>
     </div>
@@ -610,13 +755,16 @@
 
 <!-- TAKVİM -->
 <section id="takvim" class="takvim-bolum">
+  <svg class="takvim-dalga ust" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,0 H1440 V30 C1200,70 960,8 720,38 C480,68 240,10 0,40 Z" fill="#f8f3ea"/>
+  </svg>
   <div class="kap">
     <div class="baslik">
       <div>
-        <span class="ust-etiket">Etkinlikler</span>
+        <span class="ust-etiket">☀️ Moda'da bu ay</span>
         <h2>Etkinlik takvimi</h2>
       </div>
-      <p>Nevada Coffee Moda'daki tüm buluşmalarımız burada. Kategoriye göre süz, liste ya da ay görünümünde incele. Katılmak için Instagram'dan bize yazman yeterli.</p>
+      <p>Denize karşı yoga, sahilde Hyrox, Nevada'da atölyeler… Okla aylar arasında gez, bir güne dokun, o günün etkinlikleri hemen altta açılsın. Katılmak için Instagram'dan bize yazman yeterli.</p>
     </div>
     <div class="takvim-arac">
       <div class="filtreler" role="group" aria-label="Kategoriye göre süz">
@@ -626,23 +774,24 @@
         <button type="button" class="filtre kat-hareket" data-kat="hareket" aria-pressed="false">🏃 Hareket</button>
         <button type="button" class="filtre kat-sosyal" data-kat="sosyal" aria-pressed="false">💃 Sosyal</button>
       </div>
-      <div class="gorunum-sec" role="group" aria-label="Görünüm">
-        <button type="button" class="gorunum" data-gorunum="liste" aria-pressed="true">☰ Liste</button>
-        <button type="button" class="gorunum" data-gorunum="ay" aria-pressed="false">▦ Ay takvimi</button>
-      </div>
     </div>
-    <div class="etkinlikler" id="takvim-liste"></div>
-    <div id="takvim-ay" hidden>
+    <div id="takvim-ay" class="ay-kart">
       <div class="ay-ust">
         <button type="button" id="ay-geri" class="ay-ok" aria-label="Önceki ay">‹</button>
-        <h3 id="ay-baslik"></h3>
+        <div class="ay-ust-orta">
+          <h3 id="ay-baslik"></h3>
+          <div class="ay-ozet" id="ay-ozet"></div>
+        </div>
         <button type="button" id="ay-ileri" class="ay-ok" aria-label="Sonraki ay">›</button>
       </div>
       <div class="ay-izgara" id="ay-izgara"></div>
-      <div class="etkinlikler" id="gun-detay"></div>
+      <div class="gun-detay" id="gun-detay" aria-live="polite"></div>
     </div>
     <p class="not">Takvim hava koşullarına göre değişebilir. En güncel duyurular için <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">@modaeventclub</a> hesabımızı takip et.</p>
   </div>
+  <svg class="takvim-dalga alt" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,70 L0,70 Z" fill="#f8f3ea"/>
+  </svg>
 </section>
 
 <!-- EN YENİ ANI: 25 EKİM NEFES ATÖLYESİ -->
@@ -777,6 +926,14 @@
     </div>
   </div>
   <div class="kap">
+    <div class="rakamlar" aria-label="Rakamlarla Moda Event Club">
+      <div class="rakam"><b data-sayi="gecmis">0</b><span>buluşma geride kaldı</span></div>
+      <div class="rakam"><b data-sayi="yaklasan">0</b><span>yaklaşan etkinlik</span></div>
+      <div class="rakam"><b data-sayi="ortak">0</b><span>ortak & dost</span></div>
+      <div class="rakam"><b data-sayi="tur">0</b><span>farklı etkinlik türü</span></div>
+    </div>
+  </div>
+  <div class="kap">
     <div class="kolaj">
       <figure class="k-buyuk"><img src="img/iskele-gunduz.jpg" alt="Gündüz Moda İskelesi ve sahil" loading="lazy"><figcaption>Moda İskelesi</figcaption></figure>
       <figure><img src="img/dans-1.jpg" alt="Swing dans gecesinde dans eden bir çift" loading="lazy"></figure>
@@ -810,7 +967,7 @@
 </section>
 
 <!-- KONUM VE ORTAKLAR -->
-<section id="konum" class="takvim-bolum">
+<section id="konum" class="konum-bolum">
   <div class="kap">
     <div class="baslik">
       <div>
@@ -891,12 +1048,38 @@
   </div>
 </section>
 
-<footer>
-  <div class="kap alt-bilgi">
+<footer class="altbilgi">
+  <svg class="alt-dalga" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,0 H1440 V30 C1200,70 960,8 720,38 C480,68 240,10 0,40 Z" fill="#f8f3ea"/>
+  </svg>
+  <div class="kap alt-izgara">
+    <div class="alt-marka">
+      <img src="logo.jpg" alt="" width="64" height="64">
+      <div>
+        <b>Moda Event Club</b>
+        <span>Denize yakın, insana sıcak. 🌊</span>
+      </div>
+    </div>
+    <nav class="alt-linkler" aria-label="Alt menü">
+      <b>Keşfet</b>
+      <a href="#takvim">📅 Etkinlik takvimi</a>
+      <a href="#program">✨ Programımız</a>
+      <a href="#nefes">📼 Anılar</a>
+      <a href="#galeri">📸 Galeri</a>
+    </nav>
+    <div class="alt-iletisim">
+      <b>Bize ulaş</b>
+      <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">📩 Instagram'dan DM: @modaeventclub</a>
+      <a href="https://www.google.com/maps/search/?api=1&query=Nevada+Coffee+Moda+Moda+Cd.+No:171/A+Kadıköy" target="_blank" rel="noopener">📍 Nevada Coffee Moda, Moda Cd. No: 171/A, Kadıköy</a>
+    </div>
+  </div>
+  <div class="kap alt-son">
     <span>© 2026 Moda Event Club · Moda, Kadıköy, İstanbul</span>
-    <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">Instagram: @modaeventclub</a>
+    <a href="#">Yukarı çık ↑</a>
   </div>
 </footer>
+
+<a href="#" class="yukari" id="yukari" aria-label="Sayfanın başına dön">↑</a>
 
 <script>
   // VİDEOLAR: sadece ekrana gelince oynar (internet kotası harcanmasın)
@@ -929,6 +1112,11 @@
     const baslangic = new Date(2026, 9, 31, 15, 0);
     if (new Date() > bitis) {
       yaklasan.remove();
+      // "Sıradaki etkinlik" bağlantıları artık takvime gitsin
+      document.querySelectorAll('a[href="#yaklasan"]').forEach(a => {
+        a.href = "#takvim";
+        if (a.textContent.includes("Sıradaki")) a.textContent = "📅 Yaklaşan etkinlikler";
+      });
     } else {
       const gun = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
       const kalanGun = Math.round((gun(baslangic) - gun(new Date())) / 86400000);
@@ -1058,52 +1246,40 @@
     return { ...e, d: new Date(y, a - 1, g), bas, bitis, gecti: bitis < simdi };
   });
 
-  // Takvim durumu
-  const takvim = { kat: "hepsi", gorunum: "liste", tumunuGoster: false, gecmisAcik: false, ay: null, secilenGun: null };
-  const LISTE_SINIRI = 8;
-  const kutuListe = document.getElementById("takvim-liste");
-  const kutuAy = document.getElementById("takvim-ay");
+  // Takvim durumu (her zaman ay takvimi olarak gösterilir)
+  const takvim = { kat: "hepsi", ay: null, secilenGun: null };
 
   const filtreli = () => liste.filter(e => takvim.kat === "hepsi" || e.kat === takvim.kat);
   const ayAnahtari = d => d.getFullYear() * 12 + d.getMonth();
 
+  // Etkinlik adına göre simge (yeni bir tür eklenirse buraya bir satır yeter)
+  const SIMGELER = [
+    [/balkabağ/i, "🎃"], [/sulu boya/i, "🎨"], [/çiçek/i, "🌸"], [/istiridye/i, "🐚"], [/mum/i, "🕯️"],
+    [/lipgloss/i, "💄"], [/pilates/i, "🤸"], [/yoga/i, "🧘"], [/nefes/i, "🌬️"], [/hyrox/i, "🏋️"],
+    [/koşu/i, "🏃"], [/jazz|müzik/i, "🎷"], [/dans|swing/i, "💃"], [/quiz/i, "🧠"]
+  ];
+  const simge = e => (SIMGELER.find(([kalip]) => kalip.test(e.ad)) || [null, KATEGORI[e.kat].ikon])[1];
+
   function satirHTML(e) {
     const bugunMu = e.d.getTime() === bugun.getTime();
     const durum = e.gecti ? '<span class="durum gecti">GEÇTİ</span>'
-                : bugunMu ? '<span class="durum bugun">BUGÜN</span>'
+                : bugunMu ? '<span class="durum bugun">☀️ BUGÜN</span>'
                 : '<span class="durum yakinda">YAKINDA</span>';
     const k = KATEGORI[e.kat];
+    const meta = [
+      `<span>${k.ikon} ${k.ad}</span>`,
+      e.saat ? `<span>🕒 ${e.saat}</span>` : "",
+      e.yer ? `<span>📍 ${e.yer}</span>` : "",
+      e.not ? `<span>🤝 ${e.not}</span>` : ""
+    ].join("");
     return `
-      <div class="etkinlik kat-${e.kat} ${e.gecti ? "gecmis" : ""}">
-        <div class="tarih"><div class="gun">${String(e.d.getDate()).padStart(2, "0")}</div><div class="ay">${aylar[e.d.getMonth()]}</div></div>
+      <div class="g-etk kat-${e.kat} ${e.gecti ? "gecmis" : ""}">
+        <div class="g-etk-ikon" aria-hidden="true">${simge(e)}</div>
         <div>
-          <h3>${e.ad}</h3>
-          <div class="detay"><span class="kat-etiket">${k.ikon} ${k.ad}</span> ${[gunler[e.d.getDay()], e.saat, e.yer, e.not].filter(Boolean).join(" · ")}</div>
+          <div class="g-etk-ust"><h4>${e.ad}</h4>${durum}</div>
+          <div class="g-etk-meta">${meta}</div>
         </div>
-        ${durum}
       </div>`;
-  }
-
-  function listeCiz() {
-    const hepsi = filtreli();
-    const gelecek = hepsi.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas);
-    const gecmis = hepsi.filter(e => e.gecti).sort((x, y) => y.bas - x.bas);
-    const gosterilecek = takvim.tumunuGoster ? gelecek : gelecek.slice(0, LISTE_SINIRI);
-    let html = "", sonAy = null;
-    if (!gelecek.length) html += '<p class="bos-not">Bu kategoride yaklaşan etkinlik yok. Yeni tarihler için Instagram\'ı takip et! 📩</p>';
-    gosterilecek.forEach(e => {
-      const anahtar = ayAnahtari(e.d);
-      if (anahtar !== sonAy) { html += `<h3 class="ay-grup">${ayAdlari[e.d.getMonth()]} ${e.d.getFullYear()}</h3>`; sonAy = anahtar; }
-      html += satirHTML(e);
-    });
-    if (gelecek.length > LISTE_SINIRI) {
-      html += `<button type="button" class="dugme cizgili liste-dugme" data-is="tumu">${takvim.tumunuGoster ? "Daha az göster" : `Tüm yaklaşan etkinlikler (${gelecek.length})`}</button>`;
-    }
-    if (gecmis.length) {
-      html += `<button type="button" class="gecmis-dugme" data-is="gecmis" aria-expanded="${takvim.gecmisAcik}">${takvim.gecmisAcik ? "▲ Geçmiş etkinlikleri gizle" : `▼ Geçmiş etkinlikler (${gecmis.length})`}</button>`;
-      if (takvim.gecmisAcik) html += `<div class="gecmis-liste">${gecmis.map(satirHTML).join("")}</div>`;
-    }
-    kutuListe.innerHTML = html;
   }
 
   function ayCiz() {
@@ -1123,22 +1299,31 @@
     const ilkGun = new Date(yil, ay, 1);
     const bosluk = (ilkGun.getDay() + 6) % 7; // Pazartesi ile başlayan hafta
     const gunSayisi = new Date(yil, ay + 1, 0).getDate();
-    let html = ["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"].map(g => `<div class="gun-adi">${g}</div>`).join("");
+    let html = ["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"].map((g, i) => `<div class="gun-adi ${i > 4 ? "hafta-sonu" : ""}">${g}</div>`).join("");
     for (let i = 0; i < bosluk; i++) html += '<div class="gun-hucre bos"></div>';
     for (let g = 1; g <= gunSayisi; g++) {
       const d = new Date(yil, ay, g);
-      const gunun = hepsi.filter(e => e.d.getTime() === d.getTime());
+      const gunun = hepsi.filter(e => e.d.getTime() === d.getTime()).sort((x, y) => x.bas - y.bas);
       const siniflar = ["gun-hucre"];
+      if (d.getDay() === 0 || d.getDay() === 6) siniflar.push("hafta-sonu");
       if (d.getTime() === bugun.getTime()) siniflar.push("bugun");
-      if (d < bugun) siniflar.push("gecmis-gun");
+      else if (d < bugun) siniflar.push("gecmis-gun");
       if (gunun.length) siniflar.push("dolu");
       if (takvim.secilenGun === d.getTime()) siniflar.push("secili");
-      const etiketler = gunun.map(e => `<span class="g-etiket kat-${e.kat}" title="${e.ad}">${e.ad}</span>`).join("");
+      const etiketler = gunun.map(e => `<span class="g-etiket kat-${e.kat}" title="${e.ad}">${simge(e)} ${e.ad}</span>`).join("");
+      const ikonlar = gunun.length ? `<span class="g-ikonlar" aria-hidden="true">${gunun.slice(0, 2).map(simge).join("")}${gunun.length > 2 ? "+" : ""}</span>` : "";
       html += `<button type="button" class="${siniflar.join(" ")}" data-gun="${d.getTime()}" ${gunun.length ? "" : "disabled"}
         aria-label="${g} ${ayAdlari[ay]}${gunun.length ? ": " + gunun.map(e => e.ad).join(", ") : ""}">
-        <span class="g-no">${g}</span>${etiketler}</button>`;
+        <span class="g-no">${g}</span>${etiketler}${ikonlar}</button>`;
     }
     document.getElementById("ay-izgara").innerHTML = html;
+
+    // Başlıktaki ay özeti: toplam ve kategori sayıları
+    const buAy = hepsi.filter(e => ayAnahtari(e.d) === takvim.ay);
+    const sayilar = Object.keys(KATEGORI).map(k => [k, buAy.filter(e => e.kat === k).length]).filter(([, n]) => n);
+    document.getElementById("ay-ozet").innerHTML = buAy.length
+      ? `<span>✨ ${buAy.length} etkinlik</span>` + sayilar.map(([k, n]) => `<span>${KATEGORI[k].ikon} ${n}</span>`).join("")
+      : "<span>Bu ay etkinlik yok</span>";
 
     // Seçili günün etkinlikleri (seçili gün yoksa ayın yaklaşan ilk günü)
     let secili = takvim.secilenGun;
@@ -1151,23 +1336,22 @@
     const detay = document.getElementById("gun-detay");
     if (secili === null) { detay.innerHTML = '<p class="bos-not">Bu ayda bu kategoride etkinlik yok.</p>'; return; }
     const sd = new Date(secili);
-    detay.innerHTML = `<h3 class="ay-grup">${sd.getDate()} ${ayAdlari[sd.getMonth()]} ${gunler[sd.getDay()]}</h3>` +
-      ayinEtkinlikleri.filter(e => e.d.getTime() === secili).sort((x, y) => x.bas - y.bas).map(satirHTML).join("");
+    const gununEtkinlikleri = ayinEtkinlikleri.filter(e => e.d.getTime() === secili).sort((x, y) => x.bas - y.bas);
+    detay.innerHTML = `
+      <div class="gun-detay-baslik">
+        <h3>${sd.getDate()} ${ayAdlari[sd.getMonth()]} ${gunler[sd.getDay()]}</h3>
+        <span>${gununEtkinlikleri.length} etkinlik</span>
+      </div>
+      <div class="g-kartlar">${gununEtkinlikleri.map(satirHTML).join("")}</div>`;
   }
 
   function takvimCiz() {
     document.querySelectorAll(".filtre").forEach(b => b.setAttribute("aria-pressed", b.dataset.kat === takvim.kat));
-    document.querySelectorAll(".gorunum").forEach(b => b.setAttribute("aria-pressed", b.dataset.gorunum === takvim.gorunum));
-    kutuListe.hidden = takvim.gorunum !== "liste";
-    kutuAy.hidden = takvim.gorunum !== "ay";
-    if (takvim.gorunum === "liste") listeCiz(); else ayCiz();
+    ayCiz();
   }
 
   document.querySelectorAll(".filtre").forEach(b => b.addEventListener("click", () => {
-    takvim.kat = b.dataset.kat; takvim.tumunuGoster = false; takvim.secilenGun = null; takvimCiz();
-  }));
-  document.querySelectorAll(".gorunum").forEach(b => b.addEventListener("click", () => {
-    takvim.gorunum = b.dataset.gorunum; takvimCiz();
+    takvim.kat = b.dataset.kat; takvim.secilenGun = null; takvimCiz();
   }));
   document.getElementById("ay-geri").addEventListener("click", () => { takvim.ay--; takvim.secilenGun = null; ayCiz(); });
   document.getElementById("ay-ileri").addEventListener("click", () => { takvim.ay++; takvim.secilenGun = null; ayCiz(); });
@@ -1175,13 +1359,40 @@
     const h = ev.target.closest(".gun-hucre.dolu"); if (!h) return;
     takvim.secilenGun = Number(h.dataset.gun); ayCiz();
   });
-  kutuListe.addEventListener("click", ev => {
-    const b = ev.target.closest("[data-is]"); if (!b) return;
-    if (b.dataset.is === "tumu") takvim.tumunuGoster = !takvim.tumunuGoster;
-    if (b.dataset.is === "gecmis") takvim.gecmisAcik = !takvim.gecmisAcik;
-    listeCiz();
-  });
   takvimCiz();
+
+  // RAKAMLAR: takvimden otomatik hesaplanır, ekrana gelince sayarak artar
+  const rakamlar = {
+    gecmis: liste.filter(e => e.gecti).length,
+    yaklasan: liste.filter(e => !e.gecti).length,
+    ortak: document.querySelectorAll(".ortak").length,
+    tur: new Set(liste.map(simge)).size
+  };
+  const rakamKutusu = document.querySelector(".rakamlar");
+  if (rakamKutusu) {
+    const yaz = (el, n) => { el.textContent = n; };
+    const say = el => {
+      const hedef = rakamlar[el.dataset.sayi] || 0;
+      if (azHareket) return yaz(el, hedef);
+      const bas = performance.now();
+      const adim = t => { const p = Math.min(1, (t - bas) / 1200); yaz(el, Math.round(hedef * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(adim); };
+      requestAnimationFrame(adim);
+    };
+    rakamKutusu.querySelectorAll("[data-sayi]").forEach(el => yaz(el, rakamlar[el.dataset.sayi] || 0));
+    new IntersectionObserver((g, gozcu) => {
+      if (g[0].isIntersecting) { rakamKutusu.querySelectorAll("[data-sayi]").forEach(say); gozcu.disconnect(); }
+    }, { threshold: 0.4 }).observe(rakamKutusu);
+  }
+
+  // Telefonda anı galerilerinin altına "yana kaydır" ipucu
+  document.querySelectorAll(".hyrox-izgara").forEach(g =>
+    g.insertAdjacentHTML("afterend", '<p class="kaydir-ipucu">👉 Yana kaydırarak hepsini gör</p>'));
+
+  // Yukarı çık düğmesi
+  const yukari = document.getElementById("yukari");
+  const yukariGoster = () => yukari.classList.toggle("gorunur", window.scrollY > 900);
+  window.addEventListener("scroll", yukariGoster, { passive: true });
+  yukariGoster();
 </script>
 <!-- KAYDIRMA ANİMASYONLARI (AOS) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
