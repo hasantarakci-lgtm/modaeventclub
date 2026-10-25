@@ -6,6 +6,19 @@
 <title>Moda Event Club — Denize yakın, insana sıcak</title>
 <meta name="description" content="Moda, Kadıköy'de dans, müzik, sohbet, yoga, pilates, koşu ve Hyrox buluşmaları.">
 <link rel="icon" href="logo.jpg">
+<!-- WhatsApp, Instagram, Facebook vb. link önizlemesi -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:site_name" content="Moda Event Club">
+<meta property="og:title" content="Moda Event Club · Denize yakın, insana sıcak">
+<meta property="og:description" content="Moda, Kadıköy'de dans, müzik, sohbet, yoga, pilates, koşu ve Hyrox buluşmaları. Takvime göz at, aramıza katıl!">
+<meta property="og:url" content="https://hasantarakci-lgtm.github.io/modaeventclub/">
+<meta property="og:image" content="https://hasantarakci-lgtm.github.io/modaeventclub/logo-orijinal.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="Moda Event Club logosu">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#14233f">
 <!-- Kaydırma animasyonları: AOS (github.com/michalsnik/aos, MIT lisansı) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,6 +40,7 @@
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; overflow-x: clip; }
+  section[id] { scroll-margin-top: 68px; } /* menüye tıklayınca başlık üst menünün altında kalmasın */
   body {
     margin: 0;
     overflow-x: clip;
@@ -72,8 +86,8 @@
   /* ---------- Giriş ---------- */
   .giris {
     background:
-      radial-gradient(circle at 80% 30%, rgba(232,119,74,.45), transparent 45%),
-      radial-gradient(circle at 15% 90%, rgba(79,143,168,.45), transparent 50%),
+      linear-gradient(90deg, rgba(20,35,63,.94) 0%, rgba(20,35,63,.75) 45%, rgba(20,35,63,.35) 100%),
+      url("img/gunbatimi-iskele.jpg") center 40% / cover no-repeat,
       var(--lacivert);
     color: var(--krem);
     padding: 90px 0 110px;
@@ -195,6 +209,103 @@
   .ig-yer-tutucu a { color: var(--gunbatimi); font-weight: 600; }
   @media (max-width: 480px) { .ig-izgara { grid-template-columns: 1fr; } }
 
+  /* ---------- Öne çıkan video ---------- */
+  .one-cikan {
+    background: radial-gradient(circle at 85% 20%, rgba(232,119,74,.35), transparent 50%), var(--lacivert);
+    color: var(--krem);
+  }
+  .one-izgara { display: grid; grid-template-columns: 360px 1fr; gap: 56px; align-items: center; }
+  .video-cerceve {
+    position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 9 / 16;
+    box-shadow: 0 25px 60px rgba(0,0,0,.45), 0 0 0 6px rgba(217,169,91,.25); background: #000;
+  }
+  .video-cerceve video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ses-dugme {
+    position: absolute; right: 14px; bottom: 14px; border: 0; cursor: pointer;
+    background: rgba(20,35,63,.8); color: var(--krem); font: 600 14px "Inter", sans-serif;
+    padding: 9px 14px; border-radius: 999px; backdrop-filter: blur(4px);
+  }
+  .one-metin h2 { font-size: clamp(38px, 6vw, 64px); margin: 10px 0 12px; }
+  .one-metin p { font-size: 17px; opacity: .92; max-width: 560px; }
+  .one-metin .tarih-satir { font-weight: 600; color: var(--altin); opacity: 1; }
+  .one-metin .dugmeler { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+  @media (max-width: 860px) {
+    .one-izgara { grid-template-columns: 1fr; gap: 32px; }
+    .video-cerceve { max-width: 320px; margin: 0 auto; width: 100%; }
+  }
+
+  /* ---------- Hyrox anıları ---------- */
+  .hyrox-bolum { background: var(--kum); }
+  .hyrox-izgara { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: center; }
+  .hyrox-izgara figure { box-shadow: var(--golge); }
+  .hyrox-video { aspect-ratio: 9 / 16; }
+  .hyrox-afis { aspect-ratio: 4 / 5; }
+  .hyrox-izgara figcaption { top: 12px; bottom: auto; }
+  @media (max-width: 860px) {
+    .hyrox-izgara { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
+  }
+
+  /* ---------- Fotoğraflar ---------- */
+  figure { margin: 0; position: relative; overflow: hidden; border-radius: 18px; background: var(--kum); }
+  figure img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+  figure:hover img { transform: scale(1.05); }
+  figcaption {
+    position: absolute; left: 12px; bottom: 12px; padding: 6px 12px; border-radius: 999px;
+    background: rgba(20,35,63,.75); color: var(--krem); font-size: 13px; font-weight: 600;
+  }
+  .kolaj {
+    display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 210px 210px;
+    gap: 12px; margin-top: 50px;
+  }
+  .kolaj .k-buyuk { grid-column: span 2; grid-row: span 2; }
+  .k-yazi {
+    border-radius: 18px; background: var(--gunbatimi); color: var(--beyaz);
+    display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 16px;
+  }
+  .k-yazi span { font-size: 36px; }
+  .k-yazi b { font-family: "Fraunces", serif; font-size: 20px; }
+  .k-yazi small { opacity: .9; }
+  .mekan-fotolar {
+    display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 12px; margin-top: 20px; height: 340px;
+  }
+  @media (max-width: 860px) {
+    .kolaj { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 160px 160px; }
+    .kolaj .k-buyuk { grid-column: span 2; grid-row: span 1; }
+    .mekan-fotolar { grid-template-columns: 1fr 1fr; grid-template-rows: 260px 200px; height: auto; }
+    .mekan-fotolar .m-genis { grid-column: span 2; }
+  }
+
+  /* ---------- Konum ve ortaklar ---------- */
+  .konum-izgara { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: stretch; }
+  .harita { border-radius: 20px; overflow: hidden; box-shadow: var(--golge); min-height: 340px; background: var(--beyaz); }
+  .harita iframe { width: 100%; height: 100%; min-height: 340px; border: 0; display: block; }
+  .adres-kart { background: var(--beyaz); border-radius: 20px; padding: 28px; box-shadow: var(--golge); }
+  .adres-kart .ikon { font-size: 30px; }
+  .adres-kart h3 { font-size: 26px; margin: 8px 0; color: var(--lacivert); }
+  .adres-kart p { margin: 0 0 14px; }
+  .adres-kart .kucuk { font-size: 14px; color: var(--soluk); }
+  .ortaklar-baslik { margin: 60px 0 22px; text-align: center; }
+  .ortaklar-baslik h3 { font-size: clamp(26px, 4vw, 34px); margin-top: 6px; }
+  .ortaklar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .ortak {
+    background: var(--beyaz); border-radius: 16px; padding: 22px 16px; text-align: center;
+    text-decoration: none; box-shadow: 0 2px 10px rgba(20,35,63,.05);
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    transition: transform .15s, box-shadow .15s;
+  }
+  a.ortak:hover { transform: translateY(-3px); box-shadow: var(--golge); }
+  .ortak-ikon {
+    width: 52px; height: 52px; border-radius: 50%; background: var(--lacivert);
+    display: grid; place-items: center; font-size: 24px; margin-bottom: 6px;
+    border: 2px solid var(--altin);
+  }
+  .ortak b { color: var(--lacivert); font-size: 15px; }
+  .ortak span:last-child { font-size: 13px; color: var(--soluk); }
+  @media (max-width: 860px) {
+    .konum-izgara { grid-template-columns: 1fr; }
+    .ortaklar { grid-template-columns: repeat(2, 1fr); }
+  }
+
   /* ---------- Katıl ---------- */
   .katil {
     background: var(--lacivert); color: var(--krem); border-radius: 28px;
@@ -230,7 +341,14 @@
     section { padding: 64px 0; }
   }
   @media (max-width: 480px) {
-    .kartlar, .degerler, .galeri { grid-template-columns: 1fr; }
+    .degerler, .galeri { grid-template-columns: 1fr; }
+    .kartlar { gap: 10px; }
+    .kart { padding: 16px; }
+  }
+  @media (max-width: 340px) {
+    .kartlar { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
     .foto.b { grid-row: span 1; }
     .katil { padding: 44px 20px; }
   }
@@ -252,6 +370,7 @@
       <a href="#takvim">Takvim</a>
       <a href="#hakkimizda">Hakkımızda</a>
       <a href="#galeri">Galeri</a>
+      <a href="#konum">Konum</a>
       <a href="#katil" class="dugme">Etkinliğe Katıl</a>
     </nav>
   </div>
@@ -263,7 +382,7 @@
     <div>
     <span class="ust-etiket">Moda · Kadıköy · İstanbul</span>
     <h1>Denize yakın,<br><em>insana sıcak.</em></h1>
-    <p class="alt">Tanışmak, paylaşmak ve birlikte vakit geçirmek için Moda'dayız. Dans gecelerinden pazar sabahı yogasına, sohbetten Hyrox antrenmanına kadar Moda'da birlikteyiz.</p>
+    <p class="alt">Tanışmak, paylaşmak ve birlikte vakit geçirmek için Moda'dayız. Dans gecelerinden yogaya, quiz akşamlarından Hyrox antrenmanına kadar Moda'da birlikteyiz.</p>
     <div class="dugmeler">
       <a href="#katil" class="dugme">Etkinliğe Katıl</a>
       <a href="#takvim" class="dugme cizgili">Etkinlik Takvimi</a>
@@ -281,7 +400,7 @@
   <div class="kartlar">
     <div class="kart"><div class="ikon">📍</div><b>Moda, Kadıköy</b><span>Deniz kenarında buluşuyoruz</span></div>
     <div class="kart"><div class="ikon">🤝</div><b>Herkese açık</b><span>Her yaşa ve seviyeye uygun</span></div>
-    <div class="kart"><div class="ikon">🎉</div><b>7 farklı etkinlik</b><span>Sosyal, wellness ve hareket</span></div>
+    <div class="kart"><div class="ikon">🎉</div><b>Her zevke etkinlik</b><span>Danstan quize, yogadan Hyrox'a</span></div>
     <div class="kart"><div class="ikon">📩</div><b>Kolay katılım</b><span>Instagram'dan DM at, yeter</span></div>
   </div>
 </div>
@@ -300,8 +419,8 @@
       <div class="brans sosyal">
         <div class="buyuk">💃</div>
         <h3>Sosyal</h3>
-        <p>Swing dans geceleri, müzik buluşmaları ve yeni insanlarla tanışacağın sohbet akşamları.</p>
-        <div class="rozetler"><span class="rozet">Dans</span><span class="rozet">Müzik</span><span class="rozet">Sohbet</span></div>
+        <p>Swing dans geceleri, müzik buluşmaları, quiz geceleri ve yeni insanlarla tanışacağın sohbet akşamları.</p>
+        <div class="rozetler"><span class="rozet">Dans</span><span class="rozet">Müzik</span><span class="rozet">Sohbet</span><span class="rozet">Quiz</span></div>
       </div>
       <div class="brans wellness">
         <div class="buyuk">🧘</div>
@@ -334,6 +453,91 @@
   </div>
 </section>
 
+<!-- ÖNE ÇIKAN ETKİNLİK: VİDEO -->
+<section id="one-cikan" class="one-cikan">
+  <div class="kap one-izgara">
+    <div class="video-cerceve">
+      <video class="oto-video" src="video/12-eylul-dans.mp4" poster="img/video-kapak.jpg"
+        muted loop playsinline preload="none" aria-label="12 Eylül Swing Jazz Night videosu"></video>
+      <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+    </div>
+    <div class="one-metin">
+      <span class="ust-etiket" style="color:var(--altin)">Geçmiş etkinliklerimizden · Anılar</span>
+      <h2>Swing Jazz Night'tan geriye kalanlar</h2>
+      <p class="tarih-satir">📼 12 Eylül 2026 Cumartesi gecesi · Nevada Coffee Moda</p>
+      <p>Güneş batarken Moda İskelesi'nde başladı, sokaklara taştı, gece Nevada'nın terasında devam etti. Kimi ilk kez dans etti, kimi yıllardır dans ediyordu. Ama o gece herkes aynı müzikte buluştu. 🎷💃</p>
+      <p>Swing Planet ve Nevada Coffee Moda ile birlikte düzenlediğimiz o geceden kısa bir film. Bir sonraki dans gecesinde sen de aramızda ol!</p>
+      <div class="dugmeler">
+        <a href="#takvim" class="dugme">Yaklaşan etkinliklere bak</a>
+        <a href="https://www.instagram.com/swing.planet/" target="_blank" rel="noopener" class="dugme cizgili">Swing Planet</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HAREKET ANILARI: HYROX -->
+<section id="hyrox" class="hyrox-bolum">
+  <div class="kap">
+    <div class="baslik">
+      <div>
+        <span class="ust-etiket">Geçmiş etkinliklerimizden · Hareket</span>
+        <h2>Hyrox sabahları: antrenman, kahve, deniz</h2>
+      </div>
+      <p>Temmuz'dan Ekim'e, Cumartesi sabahlarını Moda'da terleyerek başlattık. Önce Hyrox antrenmanı, sonra iskeleden denize serin bir dalış, en son Nevada'da sıcak bir kahve. ☕🌊</p>
+    </div>
+    <div class="hyrox-izgara">
+      <figure class="hyrox-video video-cerceve">
+        <video class="oto-video" src="video/25-temmuz-hyrox.mp4" poster="img/hyrox-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="25 Temmuz Hyrox etkinliği videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 25 Temmuz</figcaption>
+      </figure>
+      <figure class="hyrox-afis">
+        <img src="img/hyrox-15-agustos.jpg" alt="15 Ağustos Hyrox Coffee Sea etkinlik afişi" loading="lazy">
+        <figcaption>📼 15 Ağustos · Hyrox Coffee Sea</figcaption>
+      </figure>
+      <figure class="hyrox-afis">
+        <img src="img/hyrox-10-ekim.jpg" alt="10 Ekim Hyrox Training etkinlik afişi" loading="lazy">
+        <figcaption>📼 10 Ekim · Hyrox Training</figcaption>
+      </figure>
+    </div>
+    <p class="not" style="text-align:center">Range of Motion Performance ve Nevada Coffee Moda ile birlikte düzenledik. Yeni tarihler için takvimi takip et! 💪</p>
+  </div>
+</section>
+
+<!-- DAHA FAZLA ANI: YOGA, KOŞU, QUIZ -->
+<section id="yaz-anilari">
+  <div class="kap">
+    <div class="baslik">
+      <div>
+        <span class="ust-etiket">Geçmiş etkinliklerimizden · Ağustos</span>
+        <h2>Yazdan kalanlar: yoga, koşu ve quiz</h2>
+      </div>
+      <p>Ağustos'u dolu dolu geçirdik. Bir akşam Nevada'nın bahçesinde bilgimizi yarıştırdık, 30 Ağustos Zafer Bayramı'nda ise iskele manzarasında yoga yapıp kırmızı tişörtlerle sahil boyunca koştuk. 🇹🇷</p>
+    </div>
+    <div class="hyrox-izgara">
+      <figure class="hyrox-video video-cerceve">
+        <video class="oto-video" src="video/30-agustos-yoga.mp4" poster="img/yoga-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="30 Ağustos yoga etkinliği videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 30 Ağustos · Zafer Bayramı Yogası</figcaption>
+      </figure>
+      <figure class="hyrox-video video-cerceve">
+        <video class="oto-video" src="video/30-agustos-kosu.mp4" poster="img/kosu-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="30 Ağustos Today Run Club koşusu videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 30 Ağustos · Today Run Club</figcaption>
+      </figure>
+      <figure class="hyrox-video video-cerceve">
+        <video class="oto-video" src="video/22-agustos-quiz.mp4" poster="img/quiz-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="22 Ağustos Quiz Night videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 22 Ağustos · Quiz Night</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- HAKKIMIZDA -->
 <section id="hakkimizda">
   <div class="kap hakkimizda">
@@ -349,6 +553,19 @@
       <div class="deger"><b>🌊 Moda ruhu</b><span>İskele, sahil ve gün batımı bizim sahnemiz.</span></div>
       <div class="deger"><b>🎨 Çeşitlilik</b><span>Danstan yogaya, her zevke bir etkinlik.</span></div>
       <div class="deger"><b>🌱 Herkese açık</b><span>Deneyim gerekmez, merak yeterli.</span></div>
+    </div>
+  </div>
+  <div class="kap">
+    <div class="kolaj">
+      <figure class="k-buyuk"><img src="img/iskele-gunduz.jpg" alt="Gündüz Moda İskelesi ve sahil" loading="lazy"><figcaption>Moda İskelesi</figcaption></figure>
+      <figure><img src="img/dans-1.jpg" alt="Swing dans gecesinde dans eden bir çift" loading="lazy"></figure>
+      <figure><img src="img/dans-2.jpg" alt="Swing dans gecesinde dans eden çiftler" loading="lazy"></figure>
+      <figure><img src="img/dans-3.jpg" alt="Swing dans gecesinden bir kare" loading="lazy"></figure>
+      <div class="k-yazi">
+        <span>💃</span>
+        <b>Swing Jazz Night</b>
+        <small>12 Eylül'den anılar</small>
+      </div>
     </div>
   </div>
 </section>
@@ -371,8 +588,72 @@
   </div>
 </section>
 
+<!-- KONUM VE ORTAKLAR -->
+<section id="konum" class="takvim-bolum">
+  <div class="kap">
+    <div class="baslik">
+      <div>
+        <span class="ust-etiket">Konum</span>
+        <h2>Nerede buluşuyoruz?</h2>
+      </div>
+      <p>Etkinliklerimizin çoğu Moda sahilinde, Moda İskelesi'nin hemen yanındaki ev sahibimiz Nevada Coffee Moda'da.</p>
+    </div>
+    <div class="konum-izgara">
+      <div class="harita">
+        <iframe title="Nevada Coffee Moda haritası" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Nevada+Coffee+Moda,+Moda+Cd.+No:171/A,+Caferağa,+Kadıköy,+İstanbul&z=16&output=embed"></iframe>
+      </div>
+      <div class="adres-kart">
+        <div class="ikon">📍</div>
+        <h3>Nevada Coffee Moda</h3>
+        <p>Caferağa Mah., Moda Cd. No: 171/A<br>Kadıköy / İstanbul</p>
+        <p class="kucuk">🚶 Moda İskelesi'nin hemen yanında, deniz kenarında</p>
+        <a class="dugme" target="_blank" rel="noopener"
+          href="https://www.google.com/maps/search/?api=1&query=Nevada+Coffee+Moda+Moda+Cd.+No:171/A+Kadıköy">🧭 Yol tarifi al</a>
+        <p class="kucuk" style="margin-top:14px">Bazı etkinliklerimiz iskele ve sahilde, açık havada yapılır. Yeri her duyuruda ayrıca belirtiyoruz.</p>
+      </div>
+    </div>
+    <div class="mekan-fotolar">
+      <figure><img src="img/nevada-teras.jpg" alt="Nevada Coffee Moda'nın akşam terası" loading="lazy"><figcaption>Akşam terası</figcaption></figure>
+      <figure><img src="img/nevada-masa.jpg" alt="Nevada Coffee Moda'da büyük yuvarlak masa" loading="lazy"><figcaption>Birlikte oturduğumuz masa</figcaption></figure>
+      <figure class="m-genis"><img src="img/gunbatimi-iskele.jpg" alt="Gün batımında Moda İskelesi" loading="lazy"><figcaption>Gün batımında Moda</figcaption></figure>
+    </div>
+
+    <div class="ortaklar-baslik">
+      <span class="ust-etiket">Dostlarımız</span>
+      <h3>Birlikte üretiyoruz</h3>
+    </div>
+    <div class="ortaklar">
+      <a class="ortak" href="https://www.instagram.com/nevada.coffee/" target="_blank" rel="noopener">
+        <span class="ortak-ikon">☕</span><b>Nevada Coffee Moda</b><span>Ev sahibimiz</span>
+      </a>
+      <a class="ortak" href="https://www.mssk.com.tr" target="_blank" rel="noopener">
+        <span class="ortak-ikon">🌊</span><b>ModaPark Su Sporları Kulübü</b><span>Spor ve su sporları</span>
+      </a>
+      <div class="ortak">
+        <span class="ortak-ikon">🏋️</span><b>Range of Motion Performance</b><span>Hyrox antrenmanları</span>
+      </div>
+      <div class="ortak">
+        <span class="ortak-ikon">🏃</span><b>Today Run Club</b><span>Koşu buluşmaları</span>
+      </div>
+      <a class="ortak" href="https://www.instagram.com/swing.planet/" target="_blank" rel="noopener">
+        <span class="ortak-ikon">🕺</span><b>Swing Planet</b><span>Swing dans geceleri</span>
+      </a>
+      <a class="ortak" href="https://www.instagram.com/moonliflowers/" target="_blank" rel="noopener">
+        <span class="ortak-ikon">💐</span><b>Moonli Floral Design</b><span>Çiçek atölyeleri</span>
+      </a>
+      <div class="ortak">
+        <span class="ortak-ikon">🎨</span><b>Manifest Art</b><span>Sanat ve farkındalık</span>
+      </div>
+      <div class="ortak">
+        <span class="ortak-ikon">🌬️</span><b>Nefesimekan</b><span>Nefes çalışmaları</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- KATIL -->
-<section id="katil" style="padding-top:0">
+<section id="katil">
   <div class="kap">
     <div class="katil">
       <img src="logo.jpg" alt="" class="katil-logo"><br>
@@ -397,6 +678,33 @@
 </footer>
 
 <script>
+  // VİDEOLAR: sadece ekrana gelince oynar (internet kotası harcanmasın)
+  const azHareket = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".oto-video").forEach(video => {
+    const sesDugme = video.parentElement.querySelector(".ses-dugme");
+    if (azHareket) { video.controls = true; if (sesDugme) sesDugme.hidden = true; return; } // hareket istemeyene otomatik oynatma yok
+    new IntersectionObserver(girdiler => {
+      girdiler.forEach(g => {
+        if (g.isIntersecting) { video.preload = "auto"; video.play().catch(() => {}); }
+        else video.pause();
+      });
+    }, { threshold: 0.35 }).observe(video);
+    if (sesDugme) sesDugme.addEventListener("click", () => {
+      // Bir videonun sesi açılınca diğerlerini sustur
+      if (video.muted) document.querySelectorAll(".oto-video").forEach(v => {
+        if (v !== video && !v.muted) { v.muted = true; const d = v.parentElement.querySelector(".ses-dugme"); if (d) d.textContent = "🔇 Sesi aç"; }
+      });
+      video.muted = !video.muted;
+      if (!video.muted) video.play().catch(() => {});
+      sesDugme.textContent = video.muted ? "🔇 Sesi aç" : "🔊 Sesi kapat";
+      sesDugme.setAttribute("aria-label", video.muted ? "Sesi aç" : "Sesi kapat");
+    });
+  });
+
+  // Telefonda menüden bir bölüme tıklanınca menüyü kapat
+  document.querySelectorAll(".linkler a").forEach(a =>
+    a.addEventListener("click", () => document.querySelector(".linkler").classList.remove("acik")));
+
   // Büyük logo, menüdeki logoyla aynı resmi kullanır
   document.querySelector(".giris-logo").src = document.querySelector(".logo-resim").src;
 
@@ -412,7 +720,7 @@
     "https://www.instagram.com/p/DeeMojzNYox/",    // 14 Eki · Nefes atölyesi duyurusu
     "https://www.instagram.com/p/DecAP3hDYVi/"     // 13 Eki · 1920'lerin Moda İskelesi
   ];
-  const ilkGosterilen = window.innerWidth < 700 ? 2 : 4; // telefonda 2, bilgisayarda 4
+  const ilkGosterilen = window.innerWidth < 700 ? 2 : 3; // telefonda 2, bilgisayarda 3 (tek satır)
   let gosterilen = 0;
   const izgara = document.getElementById("ig-izgara");
   const dahaFazla = document.getElementById("daha-fazla");
@@ -443,23 +751,38 @@
   const etkinlikler = [
     { tarih: "2026-10-31", ad: "Balkabağında Çiçek Workshop", saat: "15:00", tur: "Atölye", yer: "Nevada Coffee Moda", not: "Moonli Floral Design ile" },
     { tarih: "2026-10-25", ad: "Nefes Al, İçine Dön, Sanatla Kendini Keşfet", saat: "10:00–12:00", tur: "Wellness", yer: "Nevada Coffee Moda", not: "Manifest Art x Nefesimekan ile" },
-    { tarih: "2026-10-17", ad: "Swing Dans Partisi", saat: "20:00", tur: "Dans", yer: "Nevada Coffee Moda", not: "Swing Planet ile" }
+    { tarih: "2026-10-17", ad: "Swing Dans Partisi", saat: "20:00", tur: "Dans", yer: "Nevada Coffee Moda", not: "Swing Planet ile" },
+    { tarih: "2026-10-10", ad: "Hyrox Training", saat: "08:00", tur: "Hyrox", yer: "Nevada Coffee Moda", not: "Range of Motion Performance ile" },
+    { tarih: "2026-09-12", ad: "Swing Jazz Night", saat: "20:00", tur: "Dans · Müzik", yer: "Nevada Coffee Moda", not: "Swing Planet ile" },
+    { tarih: "2026-08-15", ad: "Hyrox Coffee Sea", saat: "07:30", tur: "Hyrox", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Yogası", tur: "Yoga", yer: "Nevada Coffee Moda · Moda İskelesi" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Koşusu", tur: "Koşu", yer: "Moda sahili", not: "Today Run Club ile" },
+    { tarih: "2026-08-22", ad: "Quiz Night", saat: "Akşam", tur: "Quiz · Sohbet", yer: "Nevada Coffee Moda" },
+    { tarih: "2026-07-25", ad: "Hyrox · Kahve · Deniz", saat: "Sabah", tur: "Hyrox", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" }
   ];
 
   const aylar = ["OCA","ŞUB","MAR","NİS","MAY","HAZ","TEM","AĞU","EYL","EKİ","KAS","ARA"];
   const gunler = ["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"];
+  const simdi = new Date();
   const bugun = new Date(); bugun.setHours(0,0,0,0);
 
+  // Her etkinliğin başlangıç ve bitiş anını hesapla.
+  // "10:00–12:00" gibi aralık varsa bitiş = 12:00; tek saat ya da saat yoksa bitiş = günün sonu.
   const liste = etkinlikler.map(e => {
     const [y, a, g] = e.tarih.split("-").map(Number);
-    return { ...e, d: new Date(y, a - 1, g) };
+    const saatler = (e.saat || "").match(/\d{1,2}:\d{2}/g) || [];
+    const anAl = s => { const [sa, dk] = s.split(":").map(Number); return new Date(y, a - 1, g, sa, dk); };
+    const bas = saatler[0] ? anAl(saatler[0]) : new Date(y, a - 1, g);
+    const bitis = saatler[1] ? anAl(saatler[1]) : new Date(y, a - 1, g, 23, 59);
+    return { ...e, d: new Date(y, a - 1, g), bas, bitis, gecti: bitis < simdi };
   });
-  const gelecek = liste.filter(e => e.d >= bugun).sort((x, y) => x.d - y.d);
-  const gecmis = liste.filter(e => e.d < bugun).sort((x, y) => y.d - x.d);
+  // Yapılmamışlar: en yakın tarih en üstte. Geçmişler: en yeni en üstte.
+  const gelecek = liste.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas);
+  const gecmis = liste.filter(e => e.gecti).sort((x, y) => y.bas - x.bas);
 
   const kutu = document.getElementById("etkinlikler");
   [...gelecek, ...gecmis].forEach(e => {
-    const gecti = e.d < bugun;
+    const gecti = e.gecti;
     const bugunMu = e.d.getTime() === bugun.getTime();
     const durum = gecti ? '<span class="durum gecti">GEÇTİ</span>'
                 : bugunMu ? '<span class="durum bugun">BUGÜN</span>'
@@ -469,7 +792,7 @@
         <div class="tarih"><div class="gun">${String(e.d.getDate()).padStart(2, "0")}</div><div class="ay">${aylar[e.d.getMonth()]}</div></div>
         <div>
           <h3>${e.ad}</h3>
-          <div class="detay">${gunler[e.d.getDay()]} · ${e.saat} · ${e.tur} · ${e.yer}${e.not ? " · " + e.not : ""}</div>
+          <div class="detay">${[gunler[e.d.getDay()], e.saat, e.tur, e.yer, e.not].filter(Boolean).join(" · ")}</div>
         </div>
         ${durum}
       </div>`);
@@ -488,6 +811,15 @@
     [".etkinlik", "fade-up", 80],
     [".hakkimizda .metin", "fade-right", 0],
     [".deger", "zoom-in", 100],
+    [".video-cerceve", "zoom-in", 0],
+    [".one-metin > *", "fade-up", 100],
+    [".hyrox-izgara > *", "fade-up", 120],
+    [".kolaj > *", "zoom-in", 90],
+    [".mekan-fotolar > *", "fade-up", 120],
+    [".harita", "fade-right", 0],
+    [".adres-kart", "fade-left", 0],
+    [".ortaklar-baslik", "fade-up", 0],
+    [".ortak", "fade-up", 100],
     [".katil", "zoom-in", 0],
     [".adim", "fade-up", 150]
   ];
