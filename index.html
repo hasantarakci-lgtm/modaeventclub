@@ -582,6 +582,141 @@
   }
   @media (max-width: 760px) { .alt-izgara { grid-template-columns: 1fr; gap: 24px; } .altbilgi { padding-top: 80px; } }
 
+  /* ---------- Takvim gün penceresi ---------- */
+  .gun-popup {
+    position: fixed; z-index: 90; width: min(380px, calc(100vw - 24px)); max-height: min(78vh, 620px);
+    overflow-y: auto; overscroll-behavior: contain; background: var(--beyaz); border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(20,35,63,.32), 0 0 0 1px rgba(20,35,63,.06);
+    opacity: 0; visibility: hidden; transform: translateY(8px) scale(.97); transform-origin: top center;
+    transition: opacity .16s ease, transform .16s ease, visibility 0s linear .16s;
+  }
+  .gun-popup.acik { opacity: 1; visibility: visible; transform: none; transition: opacity .16s ease, transform .16s ease; }
+  .gun-popup.modal { left: 50% !important; top: auto !important; bottom: 14px; width: min(480px, calc(100vw - 24px)); transform: translate(-50%, 24px); }
+  .gun-popup.modal.acik { transform: translate(-50%, 0); }
+  .gp-arka { position: fixed; inset: 0; z-index: 89; background: rgba(20,35,63,.5); backdrop-filter: blur(2px); }
+  .gp-ust {
+    position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 14px 16px; color: var(--beyaz);
+    background: linear-gradient(115deg, #f06a36 0%, #f59a4a 45%, #3f8fb0 100%);
+  }
+  .gp-ust small { display: block; font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; opacity: .9; }
+  .gp-ust h3 { font-family: "Fraunces", serif; font-size: 24px; margin: 0; color: var(--beyaz); }
+  .gp-kapat {
+    width: 36px; height: 36px; border-radius: 50%; border: 2px solid rgba(255,255,255,.6); cursor: pointer;
+    background: rgba(255,255,255,.2); color: var(--beyaz); font-size: 20px; line-height: 1; flex: 0 0 auto;
+  }
+  .gp-etk + .gp-etk { border-top: 1px solid #f0e6da; }
+  .gp-gorsel { position: relative; height: 170px; background: color-mix(in srgb, var(--kat) 16%, white); }
+  .gp-gorsel img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .gp-govde-yan { padding-top: 16px; background: linear-gradient(180deg, color-mix(in srgb, var(--kat) 8%, white), #fff 60%); }
+  .gp-baslik-satir { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .gp-baslik-satir h4 { margin: 0; }
+  .gp-ikon.gp-ikon-yan { position: static; flex: 0 0 auto; width: 46px; height: 46px; border: 0; }
+  .gp-ikon {
+    position: absolute; left: 14px; bottom: -18px; width: 48px; height: 48px; border-radius: 14px;
+    display: grid; place-items: center; font-size: 26px; background: var(--kat);
+    box-shadow: 0 6px 14px color-mix(in srgb, var(--kat) 40%, transparent); border: 3px solid var(--beyaz);
+  }
+  .gp-govde { padding: 26px 16px 16px; }
+  .gp-etiketler { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+  .gp-kat { color: var(--kat); font-size: 13px; font-weight: 800; }
+  .gp-govde h4 { font-family: "Fraunces", serif; font-size: 22px; line-height: 1.2; color: var(--lacivert); margin: 0 0 10px; }
+  .gp-bilgi { list-style: none; padding: 0; margin: 0 0 14px; display: grid; gap: 6px; font-size: 14.5px; color: #3d4250; }
+  .gp-dugmeler { display: flex; gap: 8px; flex-wrap: wrap; }
+  .gp-dugmeler .dugme { padding: 9px 16px; font-size: 14px; }
+  .gp-dugmeler .dugme.cizgili { color: var(--lacivert); }
+  .gp-etk.gecmis .gp-gorsel img { filter: saturate(.55); }
+  @media (prefers-reduced-motion: reduce) { .gun-popup, .gun-popup.acik { transition: none; } }
+
+  /* ---------- Maskot: Deniz ---------- */
+  .maskot { position: fixed; left: 16px; bottom: 16px; z-index: 75; display: flex; align-items: flex-end; gap: 10px; pointer-events: none; }
+  .maskot > * { pointer-events: auto; }
+  .maskot-karakter {
+    position: relative; width: 160px; height: 184px; padding: 0; border: 0; background: none; cursor: pointer;
+    transform: translateY(170%); transition: transform .7s cubic-bezier(.2, 1.4, .4, 1);
+    filter: drop-shadow(0 10px 16px rgba(20,35,63,.28)); border-radius: 20px;
+  }
+  .maskot:not([data-durum="gizli"]) .maskot-karakter { transform: none; }
+  .maskot-karakter:focus-visible { outline: 3px solid var(--gunbatimi); outline-offset: 4px; }
+  .maskot-karakter svg { width: 100%; height: 100%; overflow: visible; animation: maskot-suzul 3.4s ease-in-out infinite; }
+  /* 3D Deniz hazır olunca 2D çizim görünmez olur (ama durum bilgisini taşımaya devam eder) */
+  .deniz-3d { position: absolute; inset: -8% -6% 0; display: block; pointer-events: none; }
+  .deniz-3d canvas { display: block; width: 100% !important; height: 100% !important; }
+  .maskot.uc-boyut .maskot-karakter svg { opacity: 0; }
+  @keyframes maskot-suzul { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+  .mk-rozet {
+    position: absolute; top: -6px; right: -4px; width: 32px; height: 32px; border-radius: 50%; z-index: 1;
+    display: grid; place-items: center; font-size: 17px; background: var(--beyaz);
+    box-shadow: 0 4px 12px rgba(20,35,63,.2); animation: maskot-rozet 2s ease-in-out infinite;
+  }
+  .maskot[data-durum="acik"] .mk-rozet { display: none; }
+  @keyframes maskot-rozet { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+  /* Göz kırpma */
+  .d-goz-acik { animation: maskot-kirp-a 5.5s infinite; }
+  .d-goz-kapali { opacity: 0; animation: maskot-kirp-k 5.5s infinite; }
+  @keyframes maskot-kirp-a { 0%, 94%, 100% { opacity: 1; } 95%, 98% { opacity: 0; } }
+  @keyframes maskot-kirp-k { 0%, 94%, 100% { opacity: 0; } 95%, 98% { opacity: 1; } }
+  /* Konuşurken ağız ve baş */
+  .d-agiz-acik { display: none; }
+  .deniz.agiz-acik .d-agiz-acik { display: inline; }
+  .deniz.agiz-acik .d-agiz-kapali { display: none; }
+  .d-kafa { transform-box: view-box; transform-origin: 100px 165px; }
+  .deniz.konusuyor .d-kafa { animation: maskot-kafa 1.4s ease-in-out infinite; }
+  @keyframes maskot-kafa { 0%, 100% { transform: rotate(-2deg); } 50% { transform: rotate(2.5deg); } }
+  /* El sallama */
+  .d-kol { transform-box: view-box; transform-origin: 140px 192px; }
+  .deniz.el-salla .d-kol { animation: maskot-salla .42s ease-in-out 6 alternate; }
+  @keyframes maskot-salla { from { transform: rotate(-12deg); } to { transform: rotate(14deg); } }
+
+  /* Konuşma balonu */
+  .maskot-balon {
+    order: 1; width: min(340px, calc(100vw - 200px)); margin-bottom: 96px; overflow: hidden;
+    background: var(--beyaz); border-radius: 22px 22px 22px 6px; box-shadow: 0 20px 50px rgba(20,35,63,.28);
+    animation: maskot-balon .28s ease both;
+  }
+  @keyframes maskot-balon { from { opacity: 0; transform: translateY(10px) scale(.96); } }
+  .mb-ust {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px 10px 16px; color: var(--beyaz);
+    background: linear-gradient(115deg, #f06a36 0%, #f59a4a 45%, #3f8fb0 100%);
+  }
+  .mb-ust b { font-family: "Fraunces", serif; font-size: 19px; display: block; line-height: 1.1; }
+  .mb-ust small { font-size: 12px; font-weight: 600; opacity: .92; }
+  .mb-kapat {
+    width: 32px; height: 32px; border-radius: 50%; border: 2px solid rgba(255,255,255,.6); cursor: pointer;
+    background: rgba(255,255,255,.2); color: var(--beyaz); font-size: 20px; line-height: 1; font-weight: 700;
+  }
+  .mb-metin { margin: 0; padding: 12px 16px 4px; font-size: 15px; line-height: 1.55; color: var(--yazi); max-height: 38vh; overflow-y: auto; }
+  .mb-metin ul { margin: 6px 0 0; padding-left: 18px; }
+  .mb-metin li { margin: 2px 0; }
+  .mb-aksiyon { display: flex; gap: 8px; flex-wrap: wrap; padding: 6px 16px 0; }
+  .mb-aksiyon:empty { display: none; }
+  .mb-aksiyon .dugme { padding: 7px 14px; font-size: 13.5px; }
+  .mb-aksiyon .dugme.cizgili { color: var(--lacivert); }
+  .mb-ses { padding: 10px 16px 2px; }
+  .mb-dinle {
+    display: inline-flex; align-items: center; gap: 6px; cursor: pointer; border: 0; border-radius: 999px;
+    padding: 8px 16px; font: 700 14px "Inter", sans-serif; color: var(--beyaz);
+    background: linear-gradient(90deg, #1d3a6e, #2f8aa3); box-shadow: 0 6px 14px rgba(29,58,110,.3);
+  }
+  .mb-dinle[aria-pressed="true"] { background: linear-gradient(90deg, #e0612f, #f59a4a); }
+  .mb-ses-yok { display: block; margin-top: 6px; font-size: 12.5px; color: var(--soluk); }
+  .mb-konular { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px 14px; }
+  .mb-konular button {
+    cursor: pointer; border: 1px solid #f0dcc8; background: #fff7ef; color: var(--yazi);
+    border-radius: 999px; padding: 7px 12px; font: 600 13px "Inter", sans-serif; transition: background .15s, border-color .15s;
+  }
+  .mb-konular button:hover, .mb-konular button[aria-pressed="true"] { background: #ffe6d4; border-color: var(--gunbatimi); }
+  @media (max-width: 600px) {
+    .maskot { left: 10px; right: 10px; bottom: 10px; }
+    .maskot-karakter { width: 82px; height: 94px; }
+    .maskot-balon { position: absolute; left: 0; right: 0; bottom: 100px; width: auto; margin: 0; border-radius: 20px; }
+    .mb-metin { max-height: 32vh; font-size: 14.5px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .maskot-karakter { transition: none; }
+    .maskot-karakter svg, .mk-rozet, .d-goz-acik, .d-goz-kapali, .deniz.konusuyor .d-kafa, .deniz.el-salla .d-kol, .maskot-balon { animation: none; }
+  }
+
   /* ---------- Yukarı çık düğmesi ---------- */
   .yukari {
     position: fixed; right: 18px; bottom: 18px; z-index: 60; width: 48px; height: 48px; border-radius: 50%;
@@ -1081,6 +1216,104 @@
 
 <a href="#" class="yukari" id="yukari" aria-label="Sayfanın başına dön">↑</a>
 
+<!-- Takvimde bir günün etkinlik penceresi (üzerine gelince / dokununca açılır) -->
+<div class="gp-arka" id="gp-arka" hidden></div>
+<div class="gun-popup" id="gun-popup" role="dialog" aria-labelledby="gp-baslik" aria-hidden="true"></div>
+
+<!-- MASKOT: Deniz, Moda Event Club rehberi (konuşur, takvimden bilgi verir) -->
+<div class="maskot" id="maskot" data-durum="gizli">
+  <div class="maskot-balon" id="maskot-balon" role="dialog" aria-label="Deniz, Moda rehberi" hidden>
+    <div class="mb-ust">
+      <div><b>Deniz</b><small>Moda rehberin · 🌊</small></div>
+      <button type="button" class="mb-kapat" id="mb-kapat" aria-label="Konuşma balonunu küçült">–</button>
+    </div>
+    <p class="mb-metin" id="mb-metin" aria-live="polite"></p>
+    <div class="mb-aksiyon" id="mb-aksiyon"></div>
+    <div class="mb-ses">
+      <button type="button" class="mb-dinle" id="mb-dinle"><span aria-hidden="true">🔊</span> <span id="mb-dinle-yazi">Beni dinle</span></button>
+    </div>
+    <div class="mb-konular" role="group" aria-label="Ne öğrenmek istersin?">
+      <button type="button" data-konu="etkinlik">📅 Yaklaşan etkinlikler</button>
+      <button type="button" data-konu="katil">📩 Nasıl katılırım?</button>
+      <button type="button" data-konu="nerede">📍 Nerede?</button>
+      <button type="button" data-konu="biz">✨ Biz kimiz?</button>
+    </div>
+  </div>
+  <button type="button" class="maskot-karakter" id="maskot-karakter" aria-label="Deniz ile konuş" aria-controls="maskot-balon" aria-expanded="false">
+    <span class="mk-rozet" aria-hidden="true">👋</span>
+    <span class="deniz-3d" id="deniz-3d" aria-hidden="true"></span>
+    <svg class="deniz" viewBox="0 0 200 230" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="dIris" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16294f"/><stop offset=".55" stop-color="#2f7fa3"/><stop offset="1" stop-color="#6fd0e0"/></linearGradient>
+        <linearGradient id="dSac" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbe08a"/><stop offset="1" stop-color="#e6b84a"/></linearGradient>
+        <linearGradient id="dTen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0e2"/><stop offset="1" stop-color="#ffdcc4"/></linearGradient>
+        <pattern id="dCizgi" width="14" height="14" patternUnits="userSpaceOnUse"><rect width="14" height="14" fill="#ffffff"/><rect width="14" height="5" fill="#1d3a6e"/></pattern>
+      </defs>
+      <ellipse cx="100" cy="225" rx="54" ry="5" fill="rgba(20,35,63,.16)"/>
+      <g class="d-beden">
+        <path d="M50 96 C40 150 50 194 74 206 L128 206 C150 194 160 150 150 96 Z" fill="url(#dSac)"/>
+        <path d="M56 230 C56 188 72 172 100 170 C128 172 144 188 144 230 Z" fill="url(#dCizgi)"/>
+        <path d="M79 171 Q100 186 121 171 L118 166 Q100 178 82 166 Z" fill="#1d3a6e"/>
+        <path d="M90 176 L100 196 L110 176 Q100 182 90 176 Z" fill="#e8774a"/>
+        <path d="M62 186 C52 198 50 214 53 228 L67 228 C65 214 67 202 72 194 Z" fill="url(#dCizgi)"/>
+        <g class="d-kol">
+          <path d="M136 184 C150 174 160 158 163 142 L175 146 C172 164 162 184 146 197 Z" fill="url(#dCizgi)"/>
+          <circle cx="170" cy="138" r="10" fill="url(#dTen)"/>
+          <path d="M164 131 q2 -6 5 -1 M169 129 q2 -6 5 -1 M174 131 q3 -5 4 1" stroke="#f0bfa3" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="d-kafa">
+          <rect x="92" y="148" width="16" height="24" rx="7" fill="#f7cfb4"/>
+          <ellipse cx="55" cy="118" rx="6" ry="9" fill="#ffd9c0"/>
+          <ellipse cx="145" cy="118" rx="6" ry="9" fill="#ffd9c0"/>
+          <path d="M54 104 C54 74 76 62 100 62 C124 62 146 74 146 104 C146 132 128 158 100 160 C72 158 54 132 54 104 Z" fill="url(#dTen)"/>
+          <path d="M52 98 C46 122 48 146 58 160 C60 140 60 120 64 104 Z" fill="url(#dSac)"/>
+          <path d="M148 98 C154 122 152 146 142 160 C140 140 140 120 136 104 Z" fill="url(#dSac)"/>
+          <path d="M52 102 C52 74 74 58 100 58 C126 58 148 74 148 102 C140 94 130 88 122 86 C124 94 120 100 114 103 C112 94 106 88 98 86 C96 95 88 102 80 104 C82 96 80 90 76 88 C68 92 58 98 52 102 Z" fill="url(#dSac)"/>
+          <path d="M84 70 C92 66 104 66 112 70" stroke="rgba(255,255,255,.25)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M70 101 Q79 97 88 100" stroke="#b98a3a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <path d="M112 100 Q121 97 130 101" stroke="#b98a3a" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+          <g class="d-goz-acik">
+            <ellipse cx="79" cy="121" rx="11.5" ry="14" fill="#fff"/>
+            <ellipse cx="79" cy="123" rx="9.5" ry="12" fill="url(#dIris)"/>
+            <ellipse cx="79" cy="125" rx="4.5" ry="6" fill="#0d1a33"/>
+            <circle cx="75" cy="117" r="3.8" fill="#fff"/><circle cx="83.5" cy="129" r="1.7" fill="#fff"/>
+            <path d="M66 112 Q78 103 92 110" stroke="#24141f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+            <path d="M66 112 l-4 -3" stroke="#24141f" stroke-width="2.4" stroke-linecap="round"/>
+            <ellipse cx="121" cy="121" rx="11.5" ry="14" fill="#fff"/>
+            <ellipse cx="121" cy="123" rx="9.5" ry="12" fill="url(#dIris)"/>
+            <ellipse cx="121" cy="125" rx="4.5" ry="6" fill="#0d1a33"/>
+            <circle cx="117" cy="117" r="3.8" fill="#fff"/><circle cx="125.5" cy="129" r="1.7" fill="#fff"/>
+            <path d="M108 110 Q122 103 134 112" stroke="#24141f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+            <path d="M134 112 l4 -3" stroke="#24141f" stroke-width="2.4" stroke-linecap="round"/>
+          </g>
+          <g class="d-goz-kapali" stroke="#24141f" stroke-width="3" fill="none" stroke-linecap="round">
+            <path d="M68 122 Q79 130 90 122"/><path d="M110 122 Q121 130 132 122"/>
+          </g>
+          <ellipse cx="68" cy="139" rx="8" ry="4.5" fill="#ff8fa3" opacity=".45"/>
+          <ellipse cx="132" cy="139" rx="8" ry="4.5" fill="#ff8fa3" opacity=".45"/>
+          <path d="M99 133 q1.5 2 3 0" stroke="#e5a488" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+          <path class="d-agiz-kapali" d="M92 143 Q100 150 108 143" stroke="#b5485a" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+          <g class="d-agiz-acik">
+            <path d="M91 142 Q100 141 109 142 Q107 154 100 155 Q93 154 91 142 Z" fill="#8f2438"/>
+            <path d="M95 150 Q100 147 105 150 Q103 154 100 154 Q97 154 95 150 Z" fill="#ff8a9a"/>
+            <path d="M92 142.5 Q100 144 108 142.5" stroke="#fff" stroke-width="1.6" fill="none"/>
+          </g>
+          <g class="d-sapka">
+            <ellipse cx="100" cy="72" rx="72" ry="17" fill="#e9c483"/>
+            <ellipse cx="100" cy="69" rx="72" ry="15" fill="#f6dba6"/>
+            <path d="M40 69 Q100 80 160 69" stroke="#e2b874" stroke-width="1.5" fill="none"/>
+            <path d="M64 70 C63 40 80 28 100 28 C120 28 137 40 136 70 Z" fill="#f1cf8f"/>
+            <path d="M74 44 Q100 36 126 44" stroke="#e2b874" stroke-width="1.5" fill="none"/>
+            <path d="M64 61 C82 66 118 66 136 61 L136 71 C118 76 82 76 64 71 Z" fill="#e8774a"/>
+            <g transform="translate(128 64)"><circle r="7" fill="#fff"/><circle r="3" fill="#f8b13c"/></g>
+          </g>
+        </g>
+      </g>
+    </svg>
+  </button>
+</div>
+
+
 <script>
   // VİDEOLAR: sadece ekrana gelince oynar (internet kotası harcanmasın)
   const azHareket = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1202,26 +1435,26 @@
     { tarih: "2026-11-29", ad: "Çiçek Workshopu", kat: "atolye", yer: NEVADA },
 
     // ---- EKİM 2026 (Nevada Coffee Moda Ekim takvimi + afişler) ----
-    { tarih: "2026-10-31", ad: "Balkabağında Çiçek Workshop", saat: "15:00", kat: "atolye", yer: "Nevada Coffee · Moda Sahili", not: "Moonli Floral Design ile" },
+    { tarih: "2026-10-31", ad: "Balkabağında Çiçek Workshop", saat: "15:00", gorsel: "img/balkabagi-aranjman.jpg", odak: "center 78%", link: "#yaklasan", kat: "atolye", yer: "Nevada Coffee · Moda Sahili", not: "Moonli Floral Design ile" },
     { tarih: "2026-10-27", ad: "Sulu Boya Workshop", saat: "19:00–21:00", kat: "atolye", yer: NEVADA },
     { tarih: "2026-10-25", ad: "Sulu Boya Workshop", saat: "17:00–19:00", kat: "atolye", yer: NEVADA },
-    { tarih: "2026-10-25", ad: "Nefes Al, İçine Dön, Sanatla Kendini Keşfet", saat: "10:00–12:00", kat: "wellness", yer: NEVADA, not: "Manifest Art x Nefesimekan ile" },
+    { tarih: "2026-10-25", ad: "Nefes Al, İçine Dön, Sanatla Kendini Keşfet", saat: "10:00–12:00", gorsel: "img/nefes-meditasyon.jpg", link: "#nefes", kat: "wellness", yer: NEVADA, not: "Manifest Art x Nefesimekan ile" },
     { tarih: "2026-10-20", ad: "Sulu Boya Workshop", saat: "19:00–21:00", kat: "atolye", yer: NEVADA },
     { tarih: "2026-10-18", ad: "Sulu Boya Workshop", saat: "17:00–19:00", kat: "atolye", yer: NEVADA },
     { tarih: "2026-10-17", ad: "Swing Dans Gecesi", saat: "20:00–23:30", kat: "sosyal", yer: NEVADA, not: "Swing Planet ile" },
     { tarih: "2026-10-13", ad: "Sulu Boya Workshop", saat: "19:00–21:00", kat: "atolye", yer: NEVADA },
     { tarih: "2026-10-11", ad: "Sulu Boya Workshop", saat: "17:00–19:00", kat: "atolye", yer: NEVADA },
-    { tarih: "2026-10-10", ad: "Hyrox Training", saat: "08:00", kat: "hareket", yer: NEVADA, not: "Range of Motion Performance ile" },
+    { tarih: "2026-10-10", ad: "Hyrox Training", saat: "08:00", gorsel: "img/hyrox-10-ekim.jpg", link: "#hyrox", kat: "hareket", yer: NEVADA, not: "Range of Motion Performance ile" },
     { tarih: "2026-10-06", ad: "Sulu Boya Workshop", saat: "19:00–21:00", kat: "atolye", yer: NEVADA },
     { tarih: "2026-10-04", ad: "Sulu Boya Workshop", saat: "17:00–19:00", kat: "atolye", yer: NEVADA },
 
     // ---- YAZ 2026 ----
-    { tarih: "2026-09-12", ad: "Swing Jazz Night", saat: "20:00", kat: "sosyal", yer: NEVADA, not: "Swing Planet ile" },
-    { tarih: "2026-08-30", ad: "Zafer Bayramı Yogası", kat: "wellness", yer: "Nevada Coffee Moda · Moda İskelesi" },
-    { tarih: "2026-08-30", ad: "Zafer Bayramı Koşusu", kat: "hareket", yer: "Moda sahili", not: "Today Run Club ile" },
-    { tarih: "2026-08-22", ad: "Quiz Night", saat: "Akşam", kat: "sosyal", yer: NEVADA },
-    { tarih: "2026-08-15", ad: "Hyrox Coffee Sea", saat: "07:30", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" },
-    { tarih: "2026-07-25", ad: "Hyrox · Kahve · Deniz", saat: "Sabah", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" }
+    { tarih: "2026-09-12", ad: "Swing Jazz Night", saat: "20:00", gorsel: "img/video-kapak.jpg", link: "#one-cikan", kat: "sosyal", yer: NEVADA, not: "Swing Planet ile" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Yogası", gorsel: "img/yoga-video-kapak.jpg", link: "#yaz-anilari", kat: "wellness", yer: "Nevada Coffee Moda · Moda İskelesi" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Koşusu", gorsel: "img/kosu-video-kapak.jpg", link: "#yaz-anilari", kat: "hareket", yer: "Moda sahili", not: "Today Run Club ile" },
+    { tarih: "2026-08-22", ad: "Quiz Night", saat: "Akşam", gorsel: "img/quiz-video-kapak.jpg", link: "#yaz-anilari", kat: "sosyal", yer: NEVADA },
+    { tarih: "2026-08-15", ad: "Hyrox Coffee Sea", saat: "07:30", gorsel: "img/hyrox-15-agustos.jpg", link: "#hyrox", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" },
+    { tarih: "2026-07-25", ad: "Hyrox · Kahve · Deniz", saat: "Sabah", gorsel: "img/hyrox-video-kapak.jpg", link: "#hyrox", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" }
   ];
 
   const KATEGORI = {
@@ -1361,6 +1594,153 @@
   });
   takvimCiz();
 
+  // GÜN PENCERESİ: bilgisayarda gün üzerine gelince, telefonda dokununca o günün etkinlikleri büyük pencerede açılır
+  const popup = document.getElementById("gun-popup");
+  const popupArka = document.getElementById("gp-arka");
+  const fareVar = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+  let popupGun = null, kapatZamanlayici = null, modalAcik = false, odakDonus = null;
+
+  function popupKartHTML(e) {
+    const k = KATEGORI[e.kat];
+    const bugunMu = e.d.getTime() === bugun.getTime();
+    const durum = e.gecti ? '<span class="durum gecti">GEÇTİ</span>'
+                : bugunMu ? '<span class="durum bugun">☀️ BUGÜN</span>'
+                : '<span class="durum yakinda">YAKINDA</span>';
+    // Fotoğraf varsa üstte büyük görsel; yoksa simge başlığın yanında durur
+    const gorsel = e.gorsel
+      ? `<div class="gp-gorsel"><img src="${e.gorsel}" alt="" loading="lazy" style="object-position:${e.odak || "center 45%"}"><span class="gp-ikon" aria-hidden="true">${simge(e)}</span></div>`
+      : "";
+    const yanIkon = e.gorsel ? "" : `<span class="gp-ikon gp-ikon-yan" aria-hidden="true">${simge(e)}</span>`;
+    const bilgi = [
+      e.saat ? `<li>🕒 ${e.saat}</li>` : "",
+      e.yer ? `<li>📍 ${e.yer}</li>` : "",
+      e.not ? `<li>🤝 ${e.not}</li>` : ""
+    ].join("");
+    const dugmeler = [
+      !e.gecti ? '<a class="dugme" href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">📩 Yerini ayırt</a>' : "",
+      e.link ? `<a class="dugme cizgili" href="${e.link}" data-popup-kapat>${e.gecti ? "📼 Anılara bak" : "Detaylar"} →</a>` : ""
+    ].join("");
+    return `
+      <article class="gp-etk kat-${e.kat} ${e.gecti ? "gecmis" : ""}">
+        ${gorsel}
+        <div class="gp-govde ${e.gorsel ? "" : "gp-govde-yan"}">
+          <div class="gp-etiketler"><span class="gp-kat">${k.ikon} ${k.ad}</span>${durum}</div>
+          <div class="gp-baslik-satir">${yanIkon}<h4>${e.ad}</h4></div>
+          ${bilgi ? `<ul class="gp-bilgi">${bilgi}</ul>` : ""}
+          ${dugmeler ? `<div class="gp-dugmeler">${dugmeler}</div>` : ""}
+        </div>
+      </article>`;
+  }
+
+  function popupDoldur(gunMs) {
+    const d = new Date(gunMs);
+    const gununEtk = filtreli().filter(e => e.d.getTime() === gunMs).sort((x, y) => x.bas - y.bas);
+    popup.innerHTML = `
+      <div class="gp-ust">
+        <div><small>${gunler[d.getDay()]} · ${gununEtk.length} etkinlik</small><h3 id="gp-baslik">${d.getDate()} ${ayAdlari[d.getMonth()]} ${d.getFullYear()}</h3></div>
+        <button type="button" class="gp-kapat" aria-label="Pencereyi kapat">×</button>
+      </div>
+      ${gununEtk.map(popupKartHTML).join("")}`;
+    popupGun = gunMs;
+  }
+
+  // Bilgisayar: pencereyi günün yanına yerleştir (sağda yer yoksa sola), ekran dışına taşırma
+  function popupYerlestir(hucre) {
+    const r = hucre.getBoundingClientRect(), pw = popup.offsetWidth, ph = popup.offsetHeight, bosluk = 12;
+    let sol = r.right + bosluk;
+    if (sol + pw > window.innerWidth - bosluk) sol = r.left - pw - bosluk;
+    if (sol < bosluk) sol = Math.max(bosluk, Math.min(window.innerWidth - pw - bosluk, r.left + r.width / 2 - pw / 2));
+    const ust = Math.max(bosluk + 64, Math.min(window.innerHeight - ph - bosluk, r.top - 20));
+    popup.style.left = sol + "px";
+    popup.style.top = ust + "px";
+  }
+
+  function popupAc(hucre, modal) {
+    clearTimeout(kapatZamanlayici);
+    const gunMs = Number(hucre.dataset.gun);
+    if (popupGun !== gunMs || !popup.classList.contains("acik")) popupDoldur(gunMs);
+    popup.classList.toggle("modal", modal);
+    popup.setAttribute("aria-modal", modal ? "true" : "false");
+    if (modal) {
+      popup.style.left = ""; popup.style.top = "";
+      popupArka.hidden = false;
+      modalAcik = true;
+      odakDonus = gunMs;
+    } else {
+      popupYerlestir(hucre);
+    }
+    popup.classList.add("acik");
+    popup.setAttribute("aria-hidden", "false");
+    if (modal) popup.querySelector(".gp-kapat").focus();
+  }
+
+  function popupKapat() {
+    clearTimeout(kapatZamanlayici);
+    popup.classList.remove("acik");
+    popup.setAttribute("aria-hidden", "true");
+    popupArka.hidden = true;
+    if (modalAcik && odakDonus !== null) {
+      document.querySelector(`.gun-hucre[data-gun="${odakDonus}"]`)?.focus();
+    }
+    modalAcik = false;
+  }
+  const popupKapatGecikmeli = () => { kapatZamanlayici = setTimeout(popupKapat, 220); };
+
+  const izgaraEl = document.getElementById("ay-izgara");
+  if (fareVar) {
+    // Fare ile: üzerine gelince aç, ayrılınca kısa gecikmeyle kapat (pencereye geçebilsin)
+    izgaraEl.addEventListener("mouseover", ev => {
+      const h = ev.target.closest(".gun-hucre.dolu");
+      if (h) popupAc(h, false);
+    });
+    izgaraEl.addEventListener("mouseout", ev => {
+      const h = ev.target.closest(".gun-hucre.dolu");
+      if (h && !h.contains(ev.relatedTarget) && !popup.contains(ev.relatedTarget)) popupKapatGecikmeli();
+    });
+    popup.addEventListener("mouseenter", () => clearTimeout(kapatZamanlayici));
+    popup.addEventListener("mouseleave", () => { if (!modalAcik) popupKapatGecikmeli(); });
+    window.addEventListener("scroll", () => { if (!modalAcik && popup.classList.contains("acik")) popupKapat(); }, { passive: true });
+  }
+  // Klavye ile: Tab ile güne gelince aç
+  izgaraEl.addEventListener("focusin", ev => {
+    const h = ev.target.closest(".gun-hucre.dolu");
+    if (h && !modalAcik) popupAc(h, false);
+  });
+  izgaraEl.addEventListener("focusout", ev => {
+    if (fareVar && (izgaraEl.matches(":hover") || popup.matches(":hover"))) return; // fare hâlâ üzerindeyse kapatma
+    if (!modalAcik && !popup.contains(ev.relatedTarget) && !(ev.relatedTarget && ev.relatedTarget.closest && ev.relatedTarget.closest(".gun-hucre.dolu"))) popupKapatGecikmeli();
+  });
+  popup.addEventListener("focusout", ev => {
+    if (!modalAcik && !popup.contains(ev.relatedTarget)) popupKapatGecikmeli();
+  });
+  // Dokunmatik ekranda: güne dokununca ortada büyük pencere olarak aç
+  izgaraEl.addEventListener("click", ev => {
+    if (fareVar) return;
+    const gun = ev.target.closest(".gun-hucre.dolu")?.dataset.gun;
+    if (!gun) return;
+    requestAnimationFrame(() => { // ızgara yeniden çizildikten sonra
+      const h = document.querySelector(`.gun-hucre[data-gun="${gun}"]`);
+      if (h) popupAc(h, true);
+    });
+  });
+  popup.addEventListener("click", ev => {
+    if (ev.target.closest(".gp-kapat") || ev.target.closest("[data-popup-kapat]")) popupKapat();
+  });
+  popupArka.addEventListener("click", popupKapat);
+  document.addEventListener("keydown", ev => {
+    if (ev.key === "Escape" && popup.classList.contains("acik")) popupKapat();
+    // Büyük pencere açıkken Tab pencerenin içinde dolaşsın
+    if (ev.key === "Tab" && modalAcik) {
+      const odaklar = [...popup.querySelectorAll("a, button")];
+      if (!odaklar.length) return;
+      const ilk = odaklar[0], son = odaklar[odaklar.length - 1];
+      if (ev.shiftKey && document.activeElement === ilk) { ev.preventDefault(); son.focus(); }
+      else if (!ev.shiftKey && document.activeElement === son) { ev.preventDefault(); ilk.focus(); }
+    }
+  });
+  // Filtre ya da ay değişince açık pencereyi kapat
+  document.querySelectorAll(".filtre, .ay-ok").forEach(b => b.addEventListener("click", popupKapat));
+
   // RAKAMLAR: takvimden otomatik hesaplanır, ekrana gelince sayarak artar
   const rakamlar = {
     gecmis: liste.filter(e => e.gecti).length,
@@ -1393,6 +1773,252 @@
   const yukariGoster = () => yukari.classList.toggle("gorunur", window.scrollY > 900);
   window.addEventListener("scroll", yukariGoster, { passive: true });
   yukariGoster();
+
+  // ===================== MASKOT: DENİZ =====================
+  // Tarayıcının kendi Türkçe sesiyle konuşur; bilgileri sitedeki takvimden okur.
+  (function () {
+    const kutu = document.getElementById("maskot");
+    if (!kutu) return;
+    const balon = document.getElementById("maskot-balon");
+    const karakter = document.getElementById("maskot-karakter");
+    const svg = karakter.querySelector(".deniz");
+    const metinEl = document.getElementById("mb-metin");
+    const aksiyonEl = document.getElementById("mb-aksiyon");
+    const dinleBtn = document.getElementById("mb-dinle");
+    const dinleYazi = document.getElementById("mb-dinle-yazi");
+    const SES_VAR = "speechSynthesis" in window && "SpeechSynthesisUtterance" in window;
+    let trSes = null, agizZamanlayici = null, konusuyor = false, kendiKapanma = null, mevcut = null;
+
+    // --- Ses seçimi: Türkçe, mümkünse kadın sesi ---
+    function sesSec() {
+      const tr = speechSynthesis.getVoices().filter(v => /^tr/i.test(v.lang));
+      trSes = tr.find(v => /yelda|filiz|emel|seda|zeynep|aylin|female|kadın/i.test(v.name))
+           || tr.find(v => /google|natural|online/i.test(v.name)) || tr[0] || null;
+    }
+    if (SES_VAR) { sesSec(); speechSynthesis.addEventListener("voiceschanged", sesSec); }
+
+    // --- Kayıtlı ses dosyaları (araclar/deniz-ses.py ile üretilir, website/ses/ klasöründe) ---
+    // Dosya adı: Python aracındaki slug() ile AYNI kural
+    const slug = s => s.replace(/I/g, "ı").replace(/İ/g, "i").toLowerCase()
+      .replace(/ı/g, "i").replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s").replace(/ö/g, "o").replace(/ç/g, "c")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    const kayitAdi = e => `e-${e.tarih}-${slug(e.ad)}`;
+    let calanSes = null, kayitSirasi = [];
+
+    // --- Saatleri doğal Türkçe söylemek için: "15:00" -> "saat on beşte" ---
+    const YALIN = ["sıfır","bir","iki","üç","dört","beş","altı","yedi","sekiz","dokuz","on","on bir","on iki","on üç","on dört","on beş","on altı","on yedi","on sekiz","on dokuz","yirmi","yirmi bir","yirmi iki","yirmi üç"];
+    const BULUNMA = ["sıfırda","birde","ikide","üçte","dörtte","beşte","altıda","yedide","sekizde","dokuzda","onda","on birde","on ikide","on üçte","on dörtte","on beşte","on altıda","on yedide","on sekizde","on dokuzda","yirmide","yirmi birde","yirmi ikide","yirmi üçte"];
+    function saatSoz(s) {
+      if (!s) return "";
+      const m = s.match(/(\d{1,2}):(\d{2})/);
+      if (!m) return s.toLocaleLowerCase("tr");
+      const h = Number(m[1]), dk = Number(m[2]);
+      if (dk === 0) return "saat " + BULUNMA[h];
+      if (dk === 30) return "saat " + YALIN[h] + " buçukta";
+      return "saat " + YALIN[h] + " " + dk + " geçe";
+    }
+    const tarihYaz = e => `${e.d.getDate()} ${ayAdlari[e.d.getMonth()]} ${gunler[e.d.getDay()]}`;
+    const AY_EK = ["'ta","'ta","'ta","'da","'ta","'da","'da","'ta","'de","'de","'da","'ta"]; // Ocak'ta ... Ekim'de, Kasım'da
+    const sozAd = ad => ad.replace(/&/g, " ve ").replace(/·/g, ",");
+
+    // --- Konular: ekranda görünen metin (html) + seslendirilecek metin (ses) ---
+    function konu(ad) {
+      if (ad === "selam") {
+        const sira = liste.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas)[0];
+        return {
+          html: `Merhaba, hoş geldin! 👋 Ben <b>Deniz</b>, Moda Event Club'ın rehberiyim. Moda'da dans, yoga, Hyrox ve atölyelerle dolu bir topluluğuz. 🌊<br>Sana nasıl yardımcı olabilirim?`,
+          ses: `Merhaba, hoş geldin! Ben Deniz, Moda Event Club'ın rehberiyim. Moda'da dans, yoga, Hyrox ve atölyelerle dolu bir topluluğuz. ${sira ? "Sıradaki etkinliğimizi merak ediyorsan, Yaklaşan etkinlikler düğmesine dokun. " : ""}Sana nasıl yardımcı olabilirim?`,
+          aksiyon: "",
+          kayit: ["selam"]
+        };
+      }
+      if (ad === "etkinlik") {
+        const yak = liste.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas);
+        if (!yak.length) return {
+          kayit: ["bos"],
+          html: "Şu an takvimde yaklaşan etkinlik yok. Yeni tarihler için Instagram'ı takip et! 📩",
+          ses: "Şu an takvimde yaklaşan etkinlik yok. Yeni tarihler için Instagram hesabımızı takip et!",
+          aksiyon: '<a class="dugme" href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">📩 Instagram</a>'
+        };
+        const ilk = yak[0];
+        const kalan = Math.round((ilk.d - bugun) / 86400000);
+        const kalanYazi = kalan <= 0 ? "Bugün!" : kalan === 1 ? "Yarın!" : `${kalan} gün kaldı!`;
+        const kalanSes = kalan <= 0 ? "Bu etkinlik bugün!" : kalan === 1 ? "Yarın görüşüyoruz!" : `${kalan} gün kaldı!`;
+        const sonraki = yak.slice(1, 4);
+        const kalanKayit = kalan <= 0 ? "bugun" : kalan === 1 ? "yarin" : kalan <= 60 ? `kalan-${kalan}` : null;
+        return {
+          kayit: [kayitAdi(ilk) + "-ana", kalanKayit]
+            .concat(sonraki.length ? ["ardindan", ...sonraki.map(e => kayitAdi(e) + "-kisa"), "var"] : [])
+            .filter(Boolean),
+          html: `Sıradaki etkinliğimiz:<br>${simge(ilk)} <b>${ilk.ad}</b><br>🗓️ ${tarihYaz(ilk)}${ilk.saat ? " · 🕒 " + ilk.saat : ""} · <b>${kalanYazi}</b>` +
+                (sonraki.length ? `<br>Ardından:<ul>${sonraki.map(e => `<li>${simge(e)} ${e.d.getDate()} ${ayAdlari[e.d.getMonth()]}: ${e.ad}</li>`).join("")}</ul>` : ""),
+          ses: `Sıradaki etkinliğimiz ${tarihYaz(ilk)}${ilk.saat ? ", " + saatSoz(ilk.saat) : ""}: ${sozAd(ilk.ad)}. ${kalanSes} ` +
+               (sonraki.length ? "Ardından " + sonraki.map(e => `${e.d.getDate()} ${ayAdlari[e.d.getMonth()]}${AY_EK[e.d.getMonth()]} ${sozAd(e.ad)}`).join(", ") + " var." : ""),
+          aksiyon: '<a class="dugme" href="#takvim" data-maskot-git>📅 Takvime git</a>' +
+                   (ilk.link ? `<a class="dugme cizgili" href="${ilk.link}" data-maskot-git>Detaylar →</a>` : "")
+        };
+      }
+      if (ad === "katil") return {
+        kayit: ["katil"],
+        html: "Katılmak çok kolay! 🎉<ul><li>📅 Takvimden etkinliğini seç</li><li>📩 Instagram'dan bize DM at</li><li>🌊 Moda'da buluşalım!</li></ul>Kontenjanlı etkinliklerde yerini erken ayırt.",
+        ses: "Katılmak çok kolay! Takvimden etkinliğini seç, Instagram'dan bize mesaj at, ve Moda'da buluşalım! Kontenjanlı etkinliklerde yerini erken ayırtmayı unutma.",
+        aksiyon: '<a class="dugme" href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">📩 DM at</a>'
+      };
+      if (ad === "nerede") return {
+        kayit: ["nerede"],
+        html: "Etkinliklerimizin çoğu Moda İskelesi'nin hemen yanındaki <b>Nevada Coffee Moda</b>'da. 📍<br>Caferağa Mah., Moda Cd. No: 171/A, Kadıköy",
+        ses: "Etkinliklerimizin çoğu, Moda İskelesi'nin hemen yanındaki Nevada Coffee Moda'da. Adresimiz Caferağa Mahallesi, Moda Caddesi, numara 171 A, Kadıköy.",
+        aksiyon: '<a class="dugme" href="https://www.google.com/maps/search/?api=1&query=Nevada+Coffee+Moda+Moda+Cd.+No:171/A+Kadıköy" target="_blank" rel="noopener">🧭 Yol tarifi</a><a class="dugme cizgili" href="#konum" data-maskot-git>Harita →</a>'
+      };
+      return { // biz
+        kayit: ["biz"],
+        html: "Moda Event Club, Moda'da denizi, sokağı ve kafeleri bir buluşma noktasına dönüştüren bir topluluk. 💚<br>Dört damarımız var: 💃 Sosyal · 🧘 Wellness · 🏃 Hareket · 🎨 Atölye. Deneyim gerekmez, merak yeterli!",
+        ses: "Moda Event Club, Moda'da denizi, sokağı ve kafeleri bir buluşma noktasına dönüştüren bir topluluk. Dört damarımız var: sosyal, wellness, hareket ve atölye. Deneyim gerekmez, merak yeterli!",
+        aksiyon: '<a class="dugme cizgili" href="#program" data-maskot-git>Programımız →</a>'
+      };
+    }
+
+    // --- Konuşma ve ağız hareketi ---
+    function agizBaslat() {
+      svg.classList.add("konusuyor");
+      clearInterval(agizZamanlayici);
+      agizZamanlayici = setInterval(() => svg.classList.toggle("agiz-acik", Math.random() > 0.35), 120);
+    }
+    function agizDurdur() {
+      clearInterval(agizZamanlayici);
+      svg.classList.remove("konusuyor", "agiz-acik");
+    }
+    function sesDurumu(acik) {
+      konusuyor = acik;
+      dinleBtn.setAttribute("aria-pressed", acik ? "true" : "false");
+      dinleYazi.textContent = acik ? "Durdur" : "Beni dinle";
+      dinleBtn.firstElementChild.textContent = acik ? "⏸" : "🔊";
+    }
+    function sustur() {
+      if (SES_VAR) speechSynthesis.cancel();
+      kayitSirasi = [];
+      if (calanSes) { calanSes.pause(); calanSes = null; }
+      agizDurdur(); sesDurumu(false);
+    }
+    // Önce kayıtlı doğal ses; kayıt açılamazsa tarayıcının Türkçe sesi
+    function seslendir() {
+      if (!mevcut) return;
+      sustur();
+      const adlar = mevcut.kayit || [];
+      if (!adlar.length) { konus(mevcut.ses); return; }
+      const sesler = adlar.map(ad => { const a = new Audio(`ses/${ad}.mp3`); a.preload = "auto"; return a; });
+      kayitSirasi = sesler;
+      let i = 0;
+      const sonraki = () => {
+        if (kayitSirasi !== sesler) return;          // bu arada başka konu seçildi
+        if (i >= sesler.length) { calanSes = null; agizDurdur(); sesDurumu(false); return; }
+        calanSes = sesler[i++];
+        calanSes.onended = sonraki;
+        calanSes.onerror = () => {                   // kayıt yoksa tarayıcı sesine geç
+          if (kayitSirasi !== sesler) return;
+          kayitSirasi = []; calanSes = null; agizDurdur(); sesDurumu(false);
+          konus(mevcut.ses);
+        };
+        calanSes.play().catch(() => calanSes && calanSes.onerror && calanSes.onerror());
+      };
+      agizBaslat(); sesDurumu(true);
+      sonraki();
+    }
+    function konus(yazi) {
+      if (!SES_VAR) return;
+      if (!trSes) sesSec();
+      if (!trSes) {
+        // Türkçe ses yoksa yanlış dilde okumasın; kibarca bilgi versin
+        if (!balon.querySelector(".mb-ses-yok")) {
+          dinleBtn.insertAdjacentHTML("afterend", '<small class="mb-ses-yok">Bu tarayıcıda Türkçe ses yok 🙈 Sesimi duymak için telefonundan ya da Edge tarayıcısından gel!</small>');
+        }
+        return;
+      }
+      speechSynthesis.cancel();
+      // Uzun metinler bazı tarayıcılarda kesilir: cümle cümle sıraya koy
+      const parcalar = yazi.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, "").match(/[^.!?]+[.!?]*/g) || [yazi];
+      parcalar.map(p => p.trim()).filter(Boolean).forEach((p, i, hepsi) => {
+        const u = new SpeechSynthesisUtterance(p);
+        u.lang = "tr-TR"; if (trSes) u.voice = trSes;
+        u.rate = 1.02; u.pitch = 1.18;
+        if (i === 0) u.onstart = () => { agizBaslat(); sesDurumu(true); };
+        u.onboundary = () => svg.classList.add("agiz-acik");
+        if (i === hepsi.length - 1) { u.onend = () => { agizDurdur(); sesDurumu(false); }; }
+        u.onerror = () => { agizDurdur(); sesDurumu(false); };
+        speechSynthesis.speak(u);
+      });
+    }
+
+    // --- Balon aç/kapat ---
+    function goster(ad, sesliMi) {
+      mevcut = konu(ad);
+      metinEl.innerHTML = mevcut.html;
+      aksiyonEl.innerHTML = mevcut.aksiyon;
+      balon.querySelectorAll("[data-konu]").forEach(b => b.setAttribute("aria-pressed", b.dataset.konu === ad ? "true" : "false"));
+      if (sesliMi) seslendir();
+    }
+    function balonAc() {
+      clearTimeout(kendiKapanma);
+      balon.hidden = false;
+      kutu.dataset.durum = "acik";
+      karakter.setAttribute("aria-expanded", "true");
+      if (!mevcut) goster("selam", false);
+    }
+    function balonKapat() {
+      clearTimeout(kendiKapanma);
+      sustur();
+      balon.hidden = true;
+      kutu.dataset.durum = "kapali";
+      karakter.setAttribute("aria-expanded", "false");
+    }
+    function elSalla() {
+      svg.classList.remove("el-salla"); void svg.getBoundingClientRect();
+      svg.classList.add("el-salla");
+      setTimeout(() => svg.classList.remove("el-salla"), 2600);
+    }
+
+    karakter.addEventListener("click", () => {
+      if (balon.hidden) { balonAc(); elSalla(); } else balonKapat();
+    });
+    document.getElementById("mb-kapat").addEventListener("click", () => { balonKapat(); karakter.focus(); });
+    dinleBtn.addEventListener("click", () => {
+      clearTimeout(kendiKapanma);
+      if (konusuyor) sustur(); else seslendir();
+    });
+    balon.querySelectorAll("[data-konu]").forEach(b => b.addEventListener("click", () => {
+      clearTimeout(kendiKapanma);
+      goster(b.dataset.konu, true);
+    }));
+    aksiyonEl.addEventListener("click", ev => { if (ev.target.closest("[data-maskot-git]") && window.innerWidth < 600) balonKapat(); });
+    balon.addEventListener("keydown", ev => { if (ev.key === "Escape") { balonKapat(); karakter.focus(); } });
+    balon.addEventListener("pointerdown", () => clearTimeout(kendiKapanma));
+
+    // --- Sayfa açılınca: Deniz aşağıdan gelir, el sallar, selam verir ---
+    let ilkZiyaret = true;
+    try { ilkZiyaret = !sessionStorage.getItem("deniz-selam"); sessionStorage.setItem("deniz-selam", "1"); } catch (e) {}
+    setTimeout(() => {
+      kutu.dataset.durum = "kapali";
+      elSalla();
+      if (ilkZiyaret) {
+        setTimeout(() => {
+          balonAc();
+          // Dokunulmazsa bir süre sonra kendiliğinden küçülür
+          kendiKapanma = setTimeout(() => { if (!konusuyor) balonKapat(); }, 15000);
+        }, 700);
+      }
+    }, 1200);
+  })();
+</script>
+<!-- 3D DENİZ: WebGL destekleniyorsa yüklenir; yüklenemezse 2D Deniz kalır -->
+<script type="module">
+  const kap = document.getElementById("deniz-3d");
+  const svg = document.querySelector(".maskot-karakter .deniz");
+  const webglVar = (() => { try { const c = document.createElement("canvas"); return !!(c.getContext("webgl2") || c.getContext("webgl")); } catch (e) { return false; } })();
+  if (kap && svg && webglVar) {
+    import("./deniz3d.js")
+      .then(m => { m.denizBaslat(kap, svg); document.getElementById("maskot").classList.add("uc-boyut"); })
+      .catch(() => { /* 3D yüklenemedi: 2D Deniz devam eder */ });
+  }
 </script>
 <!-- KAYDIRMA ANİMASYONLARI (AOS) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
