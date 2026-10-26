@@ -1826,8 +1826,8 @@
       if (ad === "selam") {
         const sira = liste.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas)[0];
         return {
-          html: `Merhaba, hoş geldin! 👋 Ben <b>Deniz</b>, Moda Event Club'ın rehberiyim. Moda'da dans, yoga, Hyrox ve atölyelerle dolu bir topluluğuz. 🌊<br>Sana nasıl yardımcı olabilirim?`,
-          ses: `Merhaba, hoş geldin! Ben Deniz, Moda Event Club'ın rehberiyim. Moda'da dans, yoga, Hyrox ve atölyelerle dolu bir topluluğuz. ${sira ? "Sıradaki etkinliğimizi merak ediyorsan, Yaklaşan etkinlikler düğmesine dokun. " : ""}Sana nasıl yardımcı olabilirim?`,
+          html: `Heyy, sonunda geldin! 👋 Ben <b>Deniz</b>! Moda'da çok güzel şeyler oluyor: 🎨 atölyeler, 🤸 pilates ve 💃 dans geceleri. 🌊<br>Hangisini merak ediyorsun? Hemen anlatayım!`,
+          ses: `Heyy, sonunda geldin! Ben Deniz! Moda'da çok güzel şeyler oluyor: atölyeler, pilates ve dans geceleri. Hangisini merak ediyorsun? Hemen anlatayım!`,
           aksiyon: "",
           kayit: ["selam"]
         };
@@ -1896,7 +1896,9 @@
     }
     function sustur() {
       if (SES_VAR) speechSynthesis.cancel();
+      const eskiSira = kayitSirasi;
       kayitSirasi = [];
+      (eskiSira || []).forEach(a => { try { a.pause(); } catch (e) {} });
       if (calanSes) { calanSes.pause(); calanSes = null; }
       agizDurdur(); sesDurumu(false);
     }
@@ -1906,20 +1908,36 @@
       sustur();
       const adlar = mevcut.kayit || [];
       if (!adlar.length) { konus(mevcut.ses); return; }
-      const sesler = adlar.map(ad => { const a = new Audio(`ses/${ad}.mp3`); a.preload = "auto"; return a; });
+      // Hepsini önceden yükle; parçalar arasında boşluk kalmasın diye bir sonrakini,
+      // öncekinin sonundaki sessizliğe girmeden başlat (kesintisiz akış).
+      const ON_BASLAT = 0.22, BAS_ATLA = 0.04;
+      const sesler = adlar.map(ad => { const a = new Audio(`ses/${ad}.mp3`); a.preload = "auto"; a.load(); return a; });
       kayitSirasi = sesler;
       let i = 0;
+      const hata = () => {                           // kayıt yoksa tarayıcı sesine geç
+        if (kayitSirasi !== sesler) return;
+        kayitSirasi = []; calanSes = null; agizDurdur(); sesDurumu(false);
+        konus(mevcut.ses);
+      };
       const sonraki = () => {
         if (kayitSirasi !== sesler) return;          // bu arada başka konu seçildi
         if (i >= sesler.length) { calanSes = null; agizDurdur(); sesDurumu(false); return; }
-        calanSes = sesler[i++];
-        calanSes.onended = sonraki;
-        calanSes.onerror = () => {                   // kayıt yoksa tarayıcı sesine geç
-          if (kayitSirasi !== sesler) return;
-          kayitSirasi = []; calanSes = null; agizDurdur(); sesDurumu(false);
-          konus(mevcut.ses);
-        };
-        calanSes.play().catch(() => calanSes && calanSes.onerror && calanSes.onerror());
+        const a = sesler[i++];
+        let gecildi = false;
+        const gec = () => { if (!gecildi) { gecildi = true; sonraki(); } };
+        calanSes = a;
+        a.onended = gec;
+        a.onerror = hata;
+        if (i > 1) { try { a.currentTime = BAS_ATLA; } catch (e) {} }
+        a.play().then(() => {
+          // Sona yaklaşınca bir sonrakine geç (son parçada beklemeye gerek yok)
+          const izle = () => {
+            if (gecildi || kayitSirasi !== sesler) return;
+            if (i < sesler.length && a.duration && a.duration - a.currentTime <= ON_BASLAT) gec();
+            else if (!a.paused && !a.ended) requestAnimationFrame(izle);
+          };
+          requestAnimationFrame(izle);
+        }).catch(hata);
       };
       agizBaslat(); sesDurumu(true);
       sonraki();
