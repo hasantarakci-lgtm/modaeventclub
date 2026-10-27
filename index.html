@@ -1912,9 +1912,11 @@
       sustur();
       const adlar = mevcut.kayit || [];
       if (!adlar.length) { konus(mevcut.ses); return; }
-      // Hepsini önceden yükle; parçalar arasında boşluk kalmasın diye bir sonrakini,
-      // öncekinin sonundaki sessizliğe girmeden başlat (kesintisiz akış).
-      const ON_BASLAT = 0.22, BAS_ATLA = 0.04;
+      // Hepsini önceden yükle. Her parça sonuna kadar çalar (kelime sonu kesilmez);
+      // ardından gerçek bir insan gibi kısa bir nefes payı bırakılır:
+      // cümle bitince (ana / kalan-N / yarın / bugün) daha uzun, virgülde daha kısa.
+      const CUMLE_ARASI = 280, VIRGUL_ARASI = 90;   // milisaniye
+      const cumleSonu = ad => ad.endsWith("-ana") || ad.startsWith("kalan-") || ad === "yarin" || ad === "bugun";
       const sesler = adlar.map(ad => { const a = new Audio(`ses/${ad}.mp3`); a.preload = "auto"; a.load(); return a; });
       kayitSirasi = sesler;
       let i = 0;
@@ -1926,22 +1928,16 @@
       const sonraki = () => {
         if (kayitSirasi !== sesler) return;          // bu arada başka konu seçildi
         if (i >= sesler.length) { calanSes = null; agizDurdur(); sesDurumu(false); return; }
+        const ad = adlar[i];
         const a = sesler[i++];
-        let gecildi = false;
-        const gec = () => { if (!gecildi) { gecildi = true; sonraki(); } };
         calanSes = a;
-        a.onended = gec;
+        a.onended = () => {
+          if (kayitSirasi !== sesler) return;
+          if (i >= sesler.length) { sonraki(); return; }
+          setTimeout(sonraki, cumleSonu(ad) ? CUMLE_ARASI : VIRGUL_ARASI);
+        };
         a.onerror = hata;
-        if (i > 1) { try { a.currentTime = BAS_ATLA; } catch (e) {} }
-        a.play().then(() => {
-          // Sona yaklaşınca bir sonrakine geç (son parçada beklemeye gerek yok)
-          const izle = () => {
-            if (gecildi || kayitSirasi !== sesler) return;
-            if (i < sesler.length && a.duration && a.duration - a.currentTime <= ON_BASLAT) gec();
-            else if (!a.paused && !a.ended) requestAnimationFrame(izle);
-          };
-          requestAnimationFrame(izle);
-        }).catch(hata);
+        a.play().catch(hata);
       };
       agizBaslat(); sesDurumu(true);
       sonraki();
