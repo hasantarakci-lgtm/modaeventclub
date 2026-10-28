@@ -121,14 +121,42 @@
 
   /* ---------- Giriş ---------- */
   .giris {
-    background:
-      linear-gradient(90deg, rgba(20,35,63,.94) 0%, rgba(20,35,63,.75) 45%, rgba(20,35,63,.35) 100%),
-      url("img/gunbatimi-iskele.jpg") center 40% / cover no-repeat,
-      var(--lacivert);
+    /* Video yüklenene kadar (ya da hareket azaltma açıksa) kapak fotoğrafı görünür */
+    background: url("img/giris-kapak.jpg") center / cover no-repeat, var(--lacivert);
     color: var(--krem);
     padding: 90px 0 110px;
-    position: relative; overflow: hidden;
+    min-height: min(92vh, 860px);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden; isolation: isolate;
   }
+  .giris > .kap { width: 100%; }
+  /* Canlı arka plan videosu (kulüp etkinliklerinden sessiz montaj) */
+  .giris-video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: -2;
+    opacity: 0; transition: opacity .8s ease;
+  }
+  .giris-video.oynuyor { opacity: 1; }
+  /* Yazının okunması için koyu katman: solda koyu, sağa doğru açılır, altta dalgaya kararır */
+  .giris::before {
+    content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(20,35,63,.92) 0%, rgba(20,35,63,.72) 45%, rgba(20,35,63,.38) 100%),
+      linear-gradient(180deg, rgba(20,35,63,.35) 0%, rgba(20,35,63,0) 25%, rgba(20,35,63,0) 70%, rgba(20,35,63,.55) 100%);
+  }
+  /* Videoyu durdur / oynat (hareketli içerik için erişilebilirlik) */
+  .giris-video-dugme {
+    position: absolute; right: 20px; bottom: 84px; z-index: 3;
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(248,243,234,.45); background: rgba(20,35,63,.45);
+    color: var(--krem); font-size: 15px; line-height: 1; cursor: pointer;
+    display: grid; place-items: center; backdrop-filter: blur(4px);
+    transition: background .2s;
+  }
+  .giris-video-dugme:hover { background: rgba(20,35,63,.75); }
+  .giris-video-dugme:focus-visible { outline: 2px solid var(--altin); outline-offset: 3px; }
+  .giris-video-dugme[hidden] { display: none; }
+  .giris .dalga { z-index: 1; }
   .giris h1 { font-size: clamp(42px, 8vw, 88px); font-weight: 700; margin: 14px 0 10px; }
   .giris h1 em { font-style: italic; color: var(--altin); font-weight: 500; }
   .giris p.alt { font-size: clamp(17px, 2.2vw, 20px); max-width: 620px; opacity: .9; margin: 0 0 32px; }
@@ -735,6 +763,9 @@
     .hamburger { display: block; }
     .giris-izgara { grid-template-columns: 1fr; gap: 30px; }
     .giris-logo { width: 180px; height: 180px; order: -1; }
+    .giris { background-image: url("img/giris-kapak-dikey.jpg"); padding: 60px 0 100px; }
+    .giris::before { background: linear-gradient(180deg, rgba(20,35,63,.25) 0%, rgba(20,35,63,.45) 30%, rgba(20,35,63,.72) 55%, rgba(20,35,63,.85) 100%); }
+    .giris-video-dugme { right: 14px; bottom: 76px; }
     .kartlar { grid-template-columns: 1fr 1fr; }
     .branslar { grid-template-columns: 1fr; }
     .hakkimizda { grid-template-columns: 1fr; gap: 30px; }
@@ -781,6 +812,9 @@
 
 <!-- GİRİŞ -->
 <div class="giris">
+  <!-- Canlı arka plan: kaynak, ekran yönüne göre aşağıdaki betikte seçilir (telefon: dikey, bilgisayar: yatay) -->
+  <video class="giris-video" id="giris-video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
+  <button type="button" class="giris-video-dugme" id="giris-video-dugme" aria-label="Arka plan videosunu durdur" hidden>❚❚</button>
   <div class="kap giris-izgara">
     <div>
     <span class="ust-etiket">Moda · Kadıköy · İstanbul</span>
@@ -1337,6 +1371,33 @@
       sesDugme.setAttribute("aria-label", video.muted ? "Sesi aç" : "Sesi kapat");
     });
   });
+
+  // GİRİŞ ARKA PLAN VİDEOSU: telefonda dikey, bilgisayarda yatay montaj.
+  // Hareket azaltma açıksa ya da veri tasarrufu modundaysa video hiç yüklenmez, kapak fotoğrafı kalır.
+  (() => {
+    const video = document.getElementById("giris-video");
+    const dugme = document.getElementById("giris-video-dugme");
+    const tasarruf = navigator.connection && navigator.connection.saveData;
+    if (!video || azHareket || tasarruf) return;
+    const dikey = window.matchMedia("(max-width: 860px) and (orientation: portrait), (max-aspect-ratio: 3/4)").matches;
+    video.poster = dikey ? "img/giris-kapak-dikey.jpg" : "img/giris-kapak.jpg";
+    video.src = dikey ? "video/giris-dikey.mp4" : "video/giris-yatay.mp4";
+    video.preload = "auto";
+    let kullaniciDurdurdu = false;
+    const oynat = () => video.play().then(() => video.classList.add("oynuyor")).catch(() => {});
+    video.addEventListener("playing", () => { video.classList.add("oynuyor"); dugme.hidden = false; }, { once: true });
+    // Ekrandan çıkınca dur (pil ve internet), geri gelince devam et
+    new IntersectionObserver(g => {
+      if (g[0].isIntersecting) { if (!kullaniciDurdurdu) oynat(); }
+      else video.pause();
+    }, { threshold: 0.1 }).observe(video);
+    dugme.addEventListener("click", () => {
+      kullaniciDurdurdu = !video.paused;
+      if (kullaniciDurdurdu) video.pause(); else oynat();
+      dugme.textContent = kullaniciDurdurdu ? "▶" : "❚❚";
+      dugme.setAttribute("aria-label", kullaniciDurdurdu ? "Arka plan videosunu oynat" : "Arka plan videosunu durdur");
+    });
+  })();
 
   // YAKLAŞAN ETKİNLİK: geri sayım; etkinlik bitince bölümü gizle
   const yaklasan = document.getElementById("yaklasan");
