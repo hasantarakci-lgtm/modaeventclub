@@ -1894,6 +1894,8 @@
     }
     function sesDurumu(acik) {
       konusuyor = acik;
+      // Fareyle açılıp fare uzaklaştıysa, konuşma bitince balonu kendiliğinden kapat
+      if (!acik && typeof hoverKapatPlanla === "function") hoverKapatPlanla(1500);
       dinleBtn.setAttribute("aria-pressed", acik ? "true" : "false");
       dinleYazi.textContent = acik ? "Durdur" : "Beni dinle";
       dinleBtn.firstElementChild.textContent = acik ? "⏸" : "🔊";
@@ -1984,6 +1986,7 @@
     }
     function balonKapat() {
       clearTimeout(kendiKapanma);
+      hoverAcik = false; clearTimeout(hoverZamanlayici);
       sustur();
       balon.hidden = true;
       kutu.dataset.durum = "kapali";
@@ -1995,8 +1998,35 @@
       setTimeout(() => svg.classList.remove("el-salla"), 2600);
     }
 
+    // --- Fareyle üzerine gelince aç (sadece fareli cihazlar; telefonda dokunma ile açılır) ---
+    // hoverAcik: balon fareyle açıldı (fare gidince kapanır). Tıklanınca "sabitlenir", kendisi kapanmaz.
+    const fareliCihaz = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    let hoverAcik = false, fareUstunde = false, hoverZamanlayici = null;
+    var hoverKapatPlanla = (ms) => {
+      clearTimeout(hoverZamanlayici);
+      if (!hoverAcik || fareUstunde || konusuyor || balon.hidden) return;
+      hoverZamanlayici = setTimeout(() => {
+        if (hoverAcik && !fareUstunde && !konusuyor && !balon.contains(document.activeElement)) {
+          hoverAcik = false; balonKapat();
+        }
+      }, ms);
+    };
+    if (fareliCihaz) {
+      karakter.addEventListener("pointerenter", () => {
+        fareUstunde = true; clearTimeout(hoverZamanlayici);
+        if (!balon.hidden) return;
+        hoverZamanlayici = setTimeout(() => {      // kısa gecikme: fare sadece geçip gidiyorsa açılmasın
+          if (fareUstunde && balon.hidden) { hoverAcik = true; balonAc(); elSalla(); }
+        }, 180);
+      });
+      kutu.addEventListener("pointerenter", () => { fareUstunde = true; clearTimeout(hoverZamanlayici); });
+      kutu.addEventListener("pointerleave", () => { fareUstunde = false; hoverKapatPlanla(700); });
+    }
+
     karakter.addEventListener("click", () => {
-      if (balon.hidden) { balonAc(); elSalla(); } else balonKapat();
+      if (balon.hidden) { hoverAcik = false; balonAc(); elSalla(); }
+      else if (hoverAcik) { hoverAcik = false; clearTimeout(hoverZamanlayici); }   // fareyle açıktı: tıklayınca açık kalsın
+      else balonKapat();
     });
     document.getElementById("mb-kapat").addEventListener("click", () => { balonKapat(); karakter.focus(); });
     dinleBtn.addEventListener("click", () => {
@@ -2011,19 +2041,11 @@
     balon.addEventListener("keydown", ev => { if (ev.key === "Escape") { balonKapat(); karakter.focus(); } });
     balon.addEventListener("pointerdown", () => clearTimeout(kendiKapanma));
 
-    // --- Sayfa açılınca: Deniz aşağıdan gelir, el sallar, selam verir ---
-    let ilkZiyaret = true;
-    try { ilkZiyaret = !sessionStorage.getItem("deniz-selam"); sessionStorage.setItem("deniz-selam", "1"); } catch (e) {}
+    // --- Sayfa açılınca: Deniz aşağıdan gelir ve el sallar.
+    // Balon kendiliğinden AÇILMAZ (kullanıcı isteği): fare üzerine gelince ya da dokununca açılır.
     setTimeout(() => {
       kutu.dataset.durum = "kapali";
       elSalla();
-      if (ilkZiyaret) {
-        setTimeout(() => {
-          balonAc();
-          // Dokunulmazsa bir süre sonra kendiliğinden küçülür
-          kendiKapanma = setTimeout(() => { if (!konusuyor) balonKapat(); }, 15000);
-        }, 700);
-      }
     }, 1200);
   })();
 </script>
