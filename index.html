@@ -458,7 +458,7 @@
     position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 9 / 16;
     box-shadow: 0 25px 60px rgba(0,0,0,.45), 0 0 0 6px rgba(217,169,91,.25); background: #000;
   }
-  .video-cerceve video, .video-cerceve > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .video-cerceve video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .ses-dugme {
     position: absolute; right: 14px; bottom: 14px; border: 0; cursor: pointer;
     background: rgba(20,35,63,.8); color: var(--krem); font: 600 14px "Inter", sans-serif;
@@ -975,8 +975,10 @@
     </div>
     <div class="hyrox-izgara">
       <figure class="hyrox-video video-cerceve">
-        <img src="img/ani-nefes.jpg" alt="Nevada'nın bahçesinde şövale üzerinde Manifest Art atölye afişi" loading="lazy">
-        <figcaption>📸 25 Ekim</figcaption>
+        <video class="oto-video" src="video/25-ekim-nefes.mp4" poster="img/nefes-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="25 Ekim nefes ve sanat atölyesi videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 25 Ekim</figcaption>
       </figure>
       <figure class="nefes-foto">
         <img src="img/nefes-meditasyon.jpg" alt="Gözleri bantlı katılımcılar nefes çalışması yapıyor" loading="lazy">
@@ -994,14 +996,16 @@
 <section id="one-cikan" class="one-cikan">
   <div class="kap one-izgara">
     <div class="video-cerceve">
-      <img src="img/ani-dans.jpg" alt="Gün batımında Moda İskelesi, havadan görünüm" loading="lazy">
+      <video class="oto-video" src="video/12-eylul-dans.mp4" poster="img/video-kapak.jpg"
+        muted loop playsinline preload="none" aria-label="12 Eylül Swing Jazz Night videosu"></video>
+      <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
     </div>
     <div class="one-metin">
       <span class="ust-etiket" style="color:var(--altin)">Geçmiş etkinliklerimizden · Anılar</span>
       <h2>Swing Jazz Night'tan geriye kalanlar</h2>
       <p class="tarih-satir">📼 12 Eylül 2026 Cumartesi gecesi · Nevada Coffee Moda</p>
       <p>Güneş batarken Moda İskelesi'nde başladı, sokaklara taştı, gece Nevada'nın terasında devam etti. Kimi ilk kez dans etti, kimi yıllardır dans ediyordu. Ama o gece herkes aynı müzikte buluştu. 🎷💃</p>
-      <p>Swing Planet ve Nevada Coffee Moda ile birlikte düzenlediğimiz o gece, gün batımında Moda İskelesi'nde başladı. Bir sonraki dans gecesinde sen de aramızda ol!</p>
+      <p>Swing Planet ve Nevada Coffee Moda ile birlikte düzenlediğimiz o geceden kısa bir film. Bir sonraki dans gecesinde sen de aramızda ol!</p>
       <div class="dugmeler">
         <a href="#takvim" class="dugme">Yaklaşan etkinliklere bak</a>
         <a href="https://www.instagram.com/swing.planet/" target="_blank" rel="noopener" class="dugme cizgili">Swing Planet</a>
@@ -1022,8 +1026,10 @@
     </div>
     <div class="hyrox-izgara">
       <figure class="hyrox-video video-cerceve">
-        <img src="img/ani-hyrox.jpg" alt="Hyrox antrenmanından sonra Moda'da denizde yüzenler, uzaktan" loading="lazy">
-        <figcaption>📸 25 Temmuz</figcaption>
+        <video class="oto-video" src="video/25-temmuz-hyrox.mp4" poster="img/hyrox-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="25 Temmuz Hyrox etkinliği videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 25 Temmuz</figcaption>
       </figure>
       <figure class="hyrox-afis">
         <img src="img/hyrox-15-agustos.jpg" alt="15 Ağustos Hyrox Coffee Sea etkinlik afişi" loading="lazy">
@@ -1050,16 +1056,22 @@
     </div>
     <div class="hyrox-izgara">
       <figure class="hyrox-video video-cerceve">
-        <img src="img/ani-yoga.jpg" alt="30 Ağustos'ta iskele manzarasında kırmızı tişörtlü kalabalık yoga yapıyor, uzaktan" loading="lazy">
-        <figcaption>📸 30 Ağustos · Zafer Bayramı Yogası</figcaption>
+        <video class="oto-video" src="video/30-agustos-yoga.mp4" poster="img/yoga-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="30 Ağustos yoga etkinliği videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 30 Ağustos · Zafer Bayramı Yogası</figcaption>
       </figure>
       <figure class="hyrox-video video-cerceve">
-        <img src="img/ani-kosu.jpg" alt="30 Ağustos'ta kırmızı tişörtlü koşu grubu ağaçların önünde, uzaktan" loading="lazy">
-        <figcaption>📸 30 Ağustos · Today Run Club</figcaption>
+        <video class="oto-video" src="video/30-agustos-kosu.mp4" poster="img/kosu-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="30 Ağustos Today Run Club koşusu videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 30 Ağustos · Today Run Club</figcaption>
       </figure>
       <figure class="hyrox-video video-cerceve">
-        <img src="img/ani-quiz.jpg" alt="Akşam Nevada'nın bahçesinde Quiz Night kalabalığı, uzaktan" loading="lazy">
-        <figcaption>📸 22 Ağustos · Quiz Night</figcaption>
+        <video class="oto-video" src="video/22-agustos-quiz.mp4" poster="img/quiz-video-kapak.jpg"
+          muted loop playsinline preload="none" aria-label="22 Ağustos Quiz Night videosu"></video>
+        <button type="button" class="ses-dugme" aria-label="Sesi aç">🔇 Sesi aç</button>
+        <figcaption>📼 22 Ağustos · Quiz Night</figcaption>
       </figure>
     </div>
   </div>
@@ -1502,12 +1514,12 @@
     { tarih: "2026-10-04", ad: "Sulu Boya Workshop", saat: "17:00–19:00", kat: "atolye", yer: NEVADA },
 
     // ---- YAZ 2026 ----
-    { tarih: "2026-09-12", ad: "Swing Jazz Night", saat: "20:00", gorsel: "img/ani-dans.jpg", link: "#one-cikan", kat: "sosyal", yer: NEVADA, not: "Swing Planet ile" },
-    { tarih: "2026-08-30", ad: "Zafer Bayramı Yogası", gorsel: "img/ani-yoga.jpg", link: "#yaz-anilari", kat: "wellness", yer: "Nevada Coffee Moda · Moda İskelesi" },
-    { tarih: "2026-08-30", ad: "Zafer Bayramı Koşusu", gorsel: "img/ani-kosu.jpg", link: "#yaz-anilari", kat: "hareket", yer: "Moda sahili", not: "Today Run Club ile" },
-    { tarih: "2026-08-22", ad: "Quiz Night", saat: "Akşam", gorsel: "img/ani-quiz.jpg", link: "#yaz-anilari", kat: "sosyal", yer: NEVADA },
+    { tarih: "2026-09-12", ad: "Swing Jazz Night", saat: "20:00", gorsel: "img/video-kapak.jpg", link: "#one-cikan", kat: "sosyal", yer: NEVADA, not: "Swing Planet ile" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Yogası", gorsel: "img/yoga-video-kapak.jpg", link: "#yaz-anilari", kat: "wellness", yer: "Nevada Coffee Moda · Moda İskelesi" },
+    { tarih: "2026-08-30", ad: "Zafer Bayramı Koşusu", gorsel: "img/kosu-video-kapak.jpg", link: "#yaz-anilari", kat: "hareket", yer: "Moda sahili", not: "Today Run Club ile" },
+    { tarih: "2026-08-22", ad: "Quiz Night", saat: "Akşam", gorsel: "img/quiz-video-kapak.jpg", link: "#yaz-anilari", kat: "sosyal", yer: NEVADA },
     { tarih: "2026-08-15", ad: "Hyrox Coffee Sea", saat: "07:30", gorsel: "img/hyrox-15-agustos.jpg", link: "#hyrox", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" },
-    { tarih: "2026-07-25", ad: "Hyrox · Kahve · Deniz", saat: "Sabah", gorsel: "img/ani-hyrox.jpg", link: "#hyrox", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" }
+    { tarih: "2026-07-25", ad: "Hyrox · Kahve · Deniz", saat: "Sabah", gorsel: "img/hyrox-video-kapak.jpg", link: "#hyrox", kat: "hareket", yer: "Nevada Coffee Moda · Moda İskelesi", not: "Range of Motion Performance ile" }
   ];
 
   const KATEGORI = {
