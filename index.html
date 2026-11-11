@@ -599,6 +599,7 @@
   }
   .rakam { padding: 26px 18px; text-align: center; border-right: 1px solid rgba(255,255,255,.25); }
   .rakam:last-child { border-right: 0; }
+  .rakamlar.uc { grid-template-columns: repeat(3, 1fr); }
   .rakam b { display: block; font-family: "Fraunces", serif; font-size: clamp(36px, 5vw, 52px); line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,.15); }
   .rakam span { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; opacity: .95; }
   @media (max-width: 700px) {
@@ -606,6 +607,8 @@
     .rakam:nth-child(2) { border-right: 0; }
     .rakam:nth-child(-n+2) { border-bottom: 1px solid rgba(255,255,255,.25); }
     .rakam { padding: 20px 12px; }
+    .rakamlar.uc { grid-template-columns: 1fr 1fr; }
+    .rakamlar.uc .rakam:last-child { grid-column: 1 / -1; }
   }
 
   /* ---------- Alt bilgi ---------- */
@@ -1863,6 +1866,13 @@
   };
   const rakamKutusu = document.querySelector(".rakamlar");
   if (rakamKutusu) {
+    // Yaklaşan etkinlik yoksa "0 yaklaşan etkinlik" yazmasın: o kutu kalkar, kalan üçü ortalanır.
+    // Takvime yeni etkinlik eklenince kutu kendiliğinden geri gelir.
+    if (!rakamlar.yaklasan) {
+      const kutu = rakamKutusu.querySelector('[data-sayi="yaklasan"]');
+      if (kutu) kutu.closest(".rakam").remove();
+      rakamKutusu.classList.add("uc");
+    }
     const yaz = (el, n) => { el.textContent = n; };
     const say = el => {
       const hedef = rakamlar[el.dataset.sayi] || 0;
