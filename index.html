@@ -32,28 +32,13 @@
       "logo": "https://www.modaeventclub.com/logo-orijinal.jpg",
       "slogan": "Denize yakın, insana sıcak.",
       "sameAs": ["https://www.instagram.com/modaeventclub/"]
-    },
-    {
-      "@type": "Event",
-      "name": "Balkabağında Çiçek Workshop",
-      "description": "Sonbaharı çiçeklerle kutlamaya hazır mısın? Moonli Floral Design ile kendi balkabağı aranjmanını tasarla; kahve, içecek ve pasta eşliğinde.",
-      "startDate": "2026-10-31T15:00:00+03:00",
-      "eventStatus": "https://schema.org/EventScheduled",
-      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "image": "https://www.modaeventclub.com/img/balkabagi-afis.jpg",
-      "location": {
-        "@type": "Place",
-        "name": "Nevada Coffee Moda",
-        "address": { "@type": "PostalAddress", "streetAddress": "Caferağa Mah., Moda Cd. No: 171/A", "addressLocality": "Kadıköy", "addressRegion": "İstanbul", "addressCountry": "TR" }
-      },
-      "organizer": [
-        { "@type": "Organization", "name": "Moda Event Club", "url": "https://www.modaeventclub.com/" },
-        { "@type": "Organization", "name": "Moonli Floral Design", "url": "https://www.instagram.com/moonliflowers/" }
-      ]
     }
   ]
 }
 </script>
+<!-- Giriş kapak fotoğrafı hemen insin (ilk ekran çabuk dolsun) -->
+<link rel="preload" as="image" href="img/giris-kapak.jpg" media="(min-width: 861px)">
+<link rel="preload" as="image" href="img/giris-kapak-dikey.jpg" media="(max-width: 860px)">
 <!-- Kaydırma animasyonları: AOS (github.com/michalsnik/aos, MIT lisansı) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -110,11 +95,12 @@
   .linkler a:hover { opacity: 1; }
   .dugme {
     display: inline-block; text-decoration: none; font-weight: 600;
-    background: var(--gunbatimi); color: var(--beyaz);
+    background: #c4522a; color: var(--beyaz); /* beyaz yazı rahat okunsun diye koyu turuncu (kontrast 4.5+) */
     padding: 12px 22px; border-radius: 999px; font-size: 15px;
     transition: transform .15s, background .15s;
   }
-  .dugme:hover { transform: translateY(-2px); background: #d9663a; }
+  .dugme:hover { transform: translateY(-2px); background: #ad4420; }
+  .dugme:focus-visible { outline: 3px solid var(--altin); outline-offset: 3px; }
   .dugme.cizgili { background: transparent; border: 2px solid currentColor; }
   .linkler .dugme { opacity: 1; padding: 9px 18px; }
   .hamburger { display: none; background: none; border: 0; color: var(--krem); font-size: 28px; cursor: pointer; }
@@ -126,6 +112,7 @@
     color: var(--krem);
     padding: 90px 0 110px;
     min-height: min(92vh, 860px);
+    min-height: min(92svh, 860px); /* telefonda adres çubuğu açıkken de düğmeler ekranda kalsın */
     display: flex; align-items: center;
     position: relative; overflow: hidden; isolation: isolate;
   }
@@ -159,8 +146,23 @@
   .giris .dalga { z-index: 1; }
   .giris h1 { font-size: clamp(42px, 8vw, 88px); font-weight: 700; margin: 14px 0 10px; }
   .giris h1 em { font-style: italic; color: var(--altin); font-weight: 500; }
-  .giris p.alt { font-size: clamp(17px, 2.2vw, 20px); max-width: 620px; opacity: .9; margin: 0 0 32px; }
+  .giris p.alt { font-size: clamp(17px, 2.2vw, 20px); max-width: 620px; opacity: .9; margin: 0 0 32px; text-wrap: balance; }
   .giris .dugmeler { display: flex; gap: 14px; flex-wrap: wrap; }
+  .giris .dugmeler .dugme { padding: 15px 28px; font-size: 16px; }
+  .giris .dugmeler .dugme:not(.cizgili) { box-shadow: 0 10px 28px rgba(196,82,42,.45); }
+  .giris .dugmeler .dugme.cizgili { padding: 13px 26px; background: rgba(20,35,63,.35); backdrop-filter: blur(4px); }
+  /* Açılış: yazılar sayfa çizilir çizilmez sırayla yükselir (kütüphane beklemez, 1 saniyeden kısa sürer) */
+  @keyframes giris-yuksel { from { opacity: 0; transform: translateY(22px); } }
+  @keyframes giris-logo-gel { from { opacity: 0; transform: scale(.88); } }
+  .giris-izgara > div > * { animation: giris-yuksel .6s cubic-bezier(.2,.7,.2,1) both; }
+  /* Başlık ilk kareden itibaren görünür (sadece yerine kayar), hiçbir an boş ekran olmaz */
+  @keyframes giris-kay { from { transform: translateY(22px); } }
+  .giris-izgara > div > .ust-etiket, .giris-izgara > div > h1 { animation-name: giris-kay; }
+  .giris-izgara > div > :nth-child(2) { animation-delay: 0s; }
+  .giris-izgara > div > :nth-child(3) { animation-delay: .18s; }
+  .giris-izgara > div > :nth-child(4) { animation-delay: .28s; }
+  .giris-logo { animation: giris-logo-gel .8s cubic-bezier(.2,.7,.2,1) .1s both; }
+  @media (prefers-reduced-motion: reduce) { .giris-izgara > div > *, .giris-logo { animation: none; } }
   .giris-izgara { display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center; }
   .giris-logo {
     width: 320px; height: 320px; border-radius: 50%;
@@ -775,10 +777,13 @@
     .linkler.acik { display: flex; }
     .hamburger { display: block; }
     .giris-izgara { grid-template-columns: 1fr; gap: 30px; }
-    .giris-logo { width: 180px; height: 180px; order: -1; }
-    .giris { background-image: url("img/giris-kapak-dikey.jpg"); padding: 60px 0 100px; }
+    /* Telefonda büyük logo yok (menüde zaten var): başlık ve düğmeler ilk ekrana sığsın */
+    .giris-logo { display: none; }
+    .giris { background-image: url("img/giris-kapak-dikey.jpg"); padding: 60px 0 118px; align-items: flex-end; }
+    .giris .dugmeler { gap: 10px; }
+    .giris .dugmeler .dugme { flex: 1 1 100%; text-align: center; }
     .giris::before { background: linear-gradient(180deg, rgba(20,35,63,.25) 0%, rgba(20,35,63,.45) 30%, rgba(20,35,63,.72) 55%, rgba(20,35,63,.85) 100%); }
-    .giris-video-dugme { right: 14px; bottom: 76px; }
+    .giris-video-dugme { right: 14px; bottom: 60px; }
     .kartlar { grid-template-columns: 1fr 1fr; }
     .branslar { grid-template-columns: 1fr; }
     .hakkimizda { grid-template-columns: 1fr; gap: 30px; }
@@ -811,7 +816,7 @@
       <img src="logo.jpg" alt="Moda Event Club logosu" class="logo-resim" width="46" height="46">
       <span class="logo-yazi">Moda Event Club</span>
     </a>
-    <button class="hamburger" aria-label="Menü" onclick="document.querySelector('.linkler').classList.toggle('acik')">☰</button>
+    <button class="hamburger" aria-label="Menü" aria-expanded="false" onclick="this.setAttribute('aria-expanded', document.querySelector('.linkler').classList.toggle('acik'))">☰</button>
     <nav class="linkler">
       <a href="#takvim">Takvim</a>
       <a href="#program">Program</a>
@@ -832,13 +837,13 @@
     <div>
     <span class="ust-etiket">Moda · Kadıköy · İstanbul</span>
     <h1>Denize yakın,<br><em>insana sıcak.</em></h1>
-    <p class="alt">Tanışmak, paylaşmak ve birlikte vakit geçirmek için Moda'dayız. Dans gecelerinden yogaya, quiz akşamlarından Hyrox antrenmanına kadar Moda'da birlikteyiz.</p>
+    <p class="alt">Dans gecelerinden yogaya, quiz akşamlarından Hyrox antrenmanına: Moda'da tanışmak ve birlikte vakit geçirmek için buluşuyoruz.</p>
     <div class="dugmeler">
-      <a href="#yaklasan" class="dugme">🎃 Sıradaki etkinlik</a>
-      <a href="#takvim" class="dugme cizgili">Etkinlik Takvimi</a>
+      <a href="#takvim" class="dugme" id="giris-ana-dugme">Etkinlikleri gör</a>
+      <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener" class="dugme cizgili">Instagram'dan yaz</a>
     </div>
     </div>
-    <img class="giris-logo" alt="Moda Event Club logosu">
+    <img class="giris-logo" src="logo.jpg" alt="" width="320" height="320">
   </div>
   <svg class="dalga" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,70 L0,70 Z" fill="#f8f3ea"/>
@@ -856,7 +861,7 @@
 </div>
 
 <!-- YAKLAŞAN ETKİNLİK (etkinlik bitince kendiliğinden gizlenir) -->
-<section id="yaklasan" class="yaklasan" data-bitis="2026-10-31T23:59">
+<section id="yaklasan" class="yaklasan" data-bitis="2026-10-31T23:59" hidden>
   <div class="kap">
     <div class="yaklasan-kart">
       <div class="y-afis-kutu">
@@ -1453,11 +1458,12 @@
     if (new Date() > bitis) {
       yaklasan.remove();
       // "Sıradaki etkinlik" bağlantıları artık takvime gitsin
-      document.querySelectorAll('a[href="#yaklasan"]').forEach(a => {
-        a.href = "#takvim";
-        if (a.textContent.includes("Sıradaki")) a.textContent = "📅 Yaklaşan etkinlikler";
-      });
+      document.querySelectorAll('a[href="#yaklasan"]').forEach(a => { a.href = "#takvim"; });
     } else {
+      // Etkinlik hâlâ önümüzde: bölümü göster, girişteki ana düğme ona götürsün
+      yaklasan.hidden = false;
+      const anaDugme = document.getElementById("giris-ana-dugme");
+      if (anaDugme) { anaDugme.href = "#yaklasan"; anaDugme.textContent = "Sıradaki etkinlik"; }
       const gun = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
       const kalanGun = Math.round((gun(baslangic) - gun(new Date())) / 86400000);
       const yazi = kalanGun > 1 ? `⏳ ${kalanGun} gün kaldı`
@@ -1471,8 +1477,6 @@
   document.querySelectorAll(".linkler a").forEach(a =>
     a.addEventListener("click", () => document.querySelector(".linkler").classList.remove("acik")));
 
-  // Büyük logo, menüdeki logoyla aynı resmi kullanır
-  document.querySelector(".giris-logo").src = document.querySelector(".logo-resim").src;
 
   // INSTAGRAM GÖNDERİLERİ
   // Yeni gönderi eklemek için linkini listenin EN ÜSTÜNE eklemek yeterli.
@@ -1505,11 +1509,24 @@
   gonderiEkle(ilkGosterilen);
   dahaFazla.addEventListener("click", () => gonderiEkle(gonderiler.length));
 
-  // Instagram'ın resmi gömme kodu
-  const igKod = document.createElement("script");
-  igKod.async = true;
-  igKod.src = "https://www.instagram.com/embed.js";
-  document.body.appendChild(igKod);
+  // Instagram'ın resmi gömme kodu: sayfa açılışını yavaşlatmasın diye
+  // ancak ziyaretçi galeriye yaklaşınca yüklenir.
+  let igYuklendi = false;
+  const igYukle = () => {
+    if (igYuklendi) return;
+    igYuklendi = true;
+    const igKod = document.createElement("script");
+    igKod.async = true;
+    igKod.src = "https://www.instagram.com/embed.js";
+    document.body.appendChild(igKod);
+  };
+  if ("IntersectionObserver" in window) {
+    const igGozcu = new IntersectionObserver(g => {
+      if (g.some(x => x.isIntersecting)) { igYukle(); igGozcu.disconnect(); }
+    }, { rootMargin: "900px 0px" });
+    igGozcu.observe(izgara);
+  } else igYukle();
+  dahaFazla.addEventListener("click", igYukle);
 
   // ETKİNLİK LİSTESİ
   // Yeni etkinlik eklemek için bu listeye bir satır eklemek yeterli.
@@ -2151,9 +2168,24 @@
 
     // --- Sayfa açılınca: Deniz aşağıdan gelir ve el sallar.
     // Balon kendiliğinden AÇILMAZ (kullanıcı isteği): fare üzerine gelince ya da dokununca açılır.
-    setTimeout(() => {
+    // Deniz, girişteki düğmelerin üstüne binecekse bekler; ziyaretçi kaydırıp düğmeler çekilince gelir.
+    const dugmeyeBiner = () => {
+      const k = karakter.getBoundingClientRect();
+      const ust = innerHeight - 16 - k.height - 12, sag = k.right + 12; // Deniz'in duracağı yer + biraz pay
+      return [...document.querySelectorAll(".giris .dugmeler a")].some(a => {
+        const d = a.getBoundingClientRect();
+        return d.bottom > ust && d.top < innerHeight && d.left < sag;
+      });
+    };
+    const denizGel = () => {
+      if (dugmeyeBiner()) return;
+      removeEventListener("scroll", denizGel);
       kutu.dataset.durum = "kapali";
       elSalla();
+    };
+    setTimeout(() => {
+      addEventListener("scroll", denizGel, { passive: true });
+      denizGel();
     }, 1200);
   })();
 </script>
@@ -2173,8 +2205,6 @@
 <script>
   // Hangi parça nasıl belirsin? [seçici, animasyon, sıradakiler arası gecikme (ms)]
   const animasyonlar = [
-    [".giris-izgara > div > *", "fade-up", 120],
-    [".giris-logo", "zoom-in", 0],
     [".kart", "fade-up", 100],
     [".baslik", "fade-up", 0],
     [".brans", "fade-up", 150],
