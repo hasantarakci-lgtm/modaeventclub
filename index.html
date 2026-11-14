@@ -420,6 +420,8 @@
     background: var(--beyaz); border-radius: 28px; box-shadow: 0 20px 50px rgba(20,35,63,.14);
     border: 2px solid #f2c9a8;
   }
+  /* Afişi olmayan etkinlikte kart tek sütuna döner */
+  .yaklasan-kart.tek-sutun { grid-template-columns: 1fr; }
   /* Afişin arka planı krem; "contain" ile kesilmeden tam görünür */
   .y-afis-kutu { background: #f1ecdf; display: flex; align-items: center; justify-content: center; }
   .y-afis-kutu img { width: 100%; height: auto; display: block; }
@@ -863,41 +865,28 @@
   </div>
 </div>
 
-<!-- YAKLAŞAN ETKİNLİK (etkinlik bitince kendiliğinden gizlenir) -->
-<section id="yaklasan" class="yaklasan" data-bitis="2026-10-31T23:59" hidden>
+<!-- YAKLAŞAN ETKİNLİK
+     Takvimdeki İLK GELECEK etkinlikten kendiliğinden dolar (aşağıdaki "YAKLAŞAN ETKİNLİK VİTRİNİ" kodu).
+     Burayı elle güncellemek GEREKMEZ: etkinlik listesine satır eklemek yeterli.
+     Yaklaşan etkinlik kalmazsa bölüm kendini kaldırır, bağlantılar takvime döner. -->
+<section id="yaklasan" class="yaklasan" hidden>
   <div class="kap">
-    <div class="yaklasan-kart">
-      <div class="y-afis-kutu">
-        <img src="img/balkabagi-afis.jpg" alt="Balkabağında Çiçek Workshop afişi: 31 Ekim Cumartesi 15:00, Nevada Moda Sahili" loading="lazy">
+    <div class="yaklasan-kart" id="y-kart">
+      <div class="y-afis-kutu" id="y-afis-kutu" hidden>
+        <img id="y-afis" src="" alt="" loading="lazy">
       </div>
       <div class="yaklasan-metin">
         <div class="yaklasan-ust">
           <span class="ust-etiket">Yaklaşan etkinlik</span>
-          <span class="geri-sayim" id="geri-sayim">🎃 Çok yakında</span>
+          <span class="geri-sayim" id="geri-sayim"></span>
         </div>
-        <h2>Balkabağında Çiçek Workshop</h2>
-        <p class="yaklasan-alt">Sonbaharı çiçeklerle kutlamaya hazır mısın? Kendi balkabağı aranjmanını tasarlamak için Moonli Floral Design ile Nevada'da buluşuyoruz.</p>
-        <ul class="yaklasan-bilgi">
-          <li>🗓️ <b>31 Ekim Cumartesi</b></li>
-          <li>🕒 <b>15:00</b></li>
-          <li>📍 <b>Nevada Coffee · Moda Sahili</b></li>
-        </ul>
-        <h3 class="neler-baslik">Seni neler bekliyor?</h3>
-        <ul class="neler">
-          <li>🌼 Çiçekler ve balkabağı</li>
-          <li>☕ Kahve, içecek ve pasta</li>
-          <li>✂️ Temel aranjman teknikleri</li>
-          <li>🎃 Evine götüreceğin kendi aranjmanın</li>
-        </ul>
+        <h2 id="y-ad"></h2>
+        <p class="yaklasan-alt" id="y-alt" hidden></p>
+        <ul class="yaklasan-bilgi" id="y-bilgi"></ul>
         <p class="kontenjan">⚠️ Kontenjan sınırlı! Yerini ayırtmak için Instagram'dan DM at.</p>
         <div class="dugmeler">
           <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener" class="dugme">📩 Yerimi ayırt</a>
-          <a href="https://www.instagram.com/moonliflowers/" target="_blank" rel="noopener" class="dugme cizgili">💐 Moonli Floral Design</a>
-        </div>
-        <div class="y-fotolar">
-          <img src="img/balkabagi-aranjman.jpg" alt="Balkabağı içinde sonbahar çiçek aranjmanı" loading="lazy">
-          <img src="img/balkabagi-atolye.jpg" alt="Balkabağına çiçek yerleştirilen atölye masası" loading="lazy">
-          <img src="img/balkabagi-kahve.jpg" alt="Atölye masasında kahve, pasta ve sonbahar çiçekleri" loading="lazy">
+          <a href="#takvim" class="dugme cizgili">🗓️ Tüm takvimi gör</a>
         </div>
       </div>
     </div>
@@ -1453,28 +1442,8 @@
     });
   })();
 
-  // YAKLAŞAN ETKİNLİK: geri sayım; etkinlik bitince bölümü gizle
-  const yaklasan = document.getElementById("yaklasan");
-  if (yaklasan) {
-    const bitis = new Date(yaklasan.dataset.bitis);
-    const baslangic = new Date(2026, 9, 31, 15, 0);
-    if (new Date() > bitis) {
-      yaklasan.remove();
-      // "Sıradaki etkinlik" bağlantıları artık takvime gitsin
-      document.querySelectorAll('a[href="#yaklasan"]').forEach(a => { a.href = "#takvim"; });
-    } else {
-      // Etkinlik hâlâ önümüzde: bölümü göster, girişteki ana düğme ona götürsün
-      yaklasan.hidden = false;
-      const anaDugme = document.getElementById("giris-ana-dugme");
-      if (anaDugme) { anaDugme.href = "#yaklasan"; anaDugme.textContent = "Sıradaki etkinlik"; }
-      const gun = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
-      const kalanGun = Math.round((gun(baslangic) - gun(new Date())) / 86400000);
-      const yazi = kalanGun > 1 ? `⏳ ${kalanGun} gün kaldı`
-                 : kalanGun === 1 ? "⏳ Yarın!"
-                 : new Date() < baslangic ? "🎃 Bugün 15:00'te!" : "🎃 Şu an devam ediyor";
-      document.getElementById("geri-sayim").textContent = yazi;
-    }
-  }
+  // (Yaklaşan etkinlik vitrini artık takvim listesinden otomatik doluyor;
+  //  kod aşağıda, etkinlik listesi tanımlandıktan sonra: "YAKLAŞAN ETKİNLİK VİTRİNİ")
 
   // Telefonda menüden bir bölüme tıklanınca menüyü kapat
   document.querySelectorAll(".linkler a").forEach(a =>
@@ -1863,6 +1832,54 @@
   });
   // Filtre ya da ay değişince açık pencereyi kapat
   document.querySelectorAll(".filtre, .ay-ok").forEach(b => b.addEventListener("click", popupKapat));
+
+  // YAKLAŞAN ETKİNLİK VİTRİNİ
+  // Takvimdeki İLK GELECEK etkinliği alır ve giriş altındaki vitrin bölümünü doldurur.
+  // Etkinlik geçince sıradaki kendiliğinden devralır; hiç kalmazsa bölüm kalkar.
+  (function () {
+    const bolum = document.getElementById("yaklasan");
+    if (!bolum) return;
+    const sirada = liste.filter(e => !e.gecti).sort((x, y) => x.bas - y.bas)[0];
+    if (!sirada) {
+      bolum.remove();
+      // "Sıradaki etkinlik" bağlantıları artık takvime gitsin
+      document.querySelectorAll('a[href="#yaklasan"]').forEach(a => { a.href = "#takvim"; });
+      return;
+    }
+    const gunBasi = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+    const kalanGun = Math.round((gunBasi(sirada.d) - gunBasi(new Date())) / 86400000);
+    const isaret = simge(sirada);
+    document.getElementById("geri-sayim").textContent =
+      kalanGun > 1 ? `⏳ ${kalanGun} gün kaldı`
+      : kalanGun === 1 ? "⏳ Yarın!"
+      : new Date() >= sirada.bas ? `${isaret} Şu an devam ediyor`
+      : sirada.saat ? `${isaret} Bugün ${sirada.saat}!`
+      : `${isaret} Bugün!`;
+    document.getElementById("y-ad").textContent = sirada.ad;
+    if (sirada.aciklama) {
+      const alt = document.getElementById("y-alt");
+      alt.textContent = sirada.aciklama;
+      alt.hidden = false;
+    }
+    const tarihYazisi = `${sirada.d.getDate()} ${ayAdlari[sirada.d.getMonth()]} ${gunler[sirada.d.getDay()]}`;
+    document.getElementById("y-bilgi").innerHTML = [
+      `🗓️ <b>${tarihYazisi}</b>`,
+      sirada.saat ? `🕒 <b>${sirada.saat}</b>` : "",
+      sirada.yer ? `📍 <b>${sirada.yer}</b>` : "",
+      sirada.not ? `🤝 <b>${sirada.not}</b>` : ""
+    ].filter(Boolean).map(x => `<li>${x}</li>`).join("");
+    if (sirada.gorsel) {
+      const afis = document.getElementById("y-afis");
+      afis.src = sirada.gorsel;
+      afis.alt = `${sirada.ad} afişi`;
+      document.getElementById("y-afis-kutu").hidden = false;
+    } else {
+      document.getElementById("y-kart").classList.add("tek-sutun");
+    }
+    bolum.hidden = false;
+    const anaDugme = document.getElementById("giris-ana-dugme");
+    if (anaDugme) { anaDugme.href = "#yaklasan"; anaDugme.textContent = "Sıradaki etkinlik"; }
+  })();
 
   // RAKAMLAR: takvimden otomatik hesaplanır, ekrana gelince sayarak artar
   const rakamlar = {
