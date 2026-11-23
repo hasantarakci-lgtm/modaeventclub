@@ -396,22 +396,52 @@
   .f5 { background: linear-gradient(135deg, #b84f2c, #d9a95b); }
 
   /* ---------- Instagram gönderileri ---------- */
-  .ig-izgara {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px; align-items: start;
+  /* Kendi karelerimiz: Instagram'ın gömme kutuları yerine sitenin tasarımında hafif bir ızgara.
+     Her kare ilgili Instagram gönderisini açar. */
+  .ig-profil {
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    background: var(--beyaz); border-radius: 999px; padding: 8px 8px 8px 10px;
+    box-shadow: var(--golge); margin-bottom: 24px; width: fit-content; max-width: 100%;
   }
-  .ig-izgara .instagram-media, .ig-izgara iframe {
-    min-width: 0 !important; width: 100% !important; max-width: 100% !important;
-    margin: 0 !important; border-radius: 14px !important;
+  .ig-profil img { width: 44px; height: 44px; border-radius: 50%; display: block;
+    box-shadow: 0 0 0 2px var(--beyaz), 0 0 0 4px var(--gunbatimi); }
+  .ig-profil b { display: block; color: var(--lacivert); font-size: 15px; }
+  .ig-profil span { display: block; color: var(--soluk); font-size: 13px; }
+  .ig-profil .dugme { padding: 9px 18px; font-size: 14px; white-space: nowrap; }
+  .ig-izgara { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .ig-kare {
+    display: flex; flex-direction: column; overflow: hidden; border-radius: 18px;
+    background: var(--beyaz); color: var(--lacivert); text-decoration: none; box-shadow: var(--golge);
+    transition: transform .25s ease, box-shadow .25s ease;
   }
-  /* Yüklenirken yer ayır, sayfa zıplamasın */
-  .ig-izgara blockquote.instagram-media { min-height: 480px; background: var(--beyaz); border: 0; padding: 0; }
-  .ig-yer-tutucu {
-    background: var(--beyaz); border-radius: 14px; padding: 24px; text-align: center;
-    box-shadow: var(--golge); color: var(--soluk); font-size: 14px;
+  .ig-kare:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(20,35,63,.16); }
+  .ig-kare:focus-visible { outline: 3px solid var(--altin); outline-offset: 3px; }
+  .ig-foto { position: relative; display: block; aspect-ratio: 4 / 5; overflow: hidden; background: var(--kum); }
+  .ig-foto img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .6s ease; }
+  .ig-kare:hover .ig-foto img, .ig-kare:focus-visible .ig-foto img { transform: scale(1.05); }
+  .ig-ust { position: absolute; top: 10px; left: 10px; right: 10px;
+    display: flex; justify-content: space-between; gap: 6px; pointer-events: none; }
+  .ig-rozet {
+    padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700;
+    background: rgba(20,35,63,.78); color: var(--krem); backdrop-filter: blur(4px);
   }
-  .ig-yer-tutucu a { color: var(--gunbatimi); font-weight: 600; }
-  @media (max-width: 480px) { .ig-izgara { grid-template-columns: 1fr; } }
+  .ig-rozet.yakinda { background: var(--gunbatimi); color: var(--beyaz); margin-left: auto; letter-spacing: .06em; }
+  .ig-alt { display: flex; flex-direction: column; gap: 4px; padding: 14px 16px 16px; flex: 1; }
+  .ig-alt time { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #c24e1f; }
+  .ig-yazi { font-family: "Fraunces", Georgia, serif; font-size: 17px; line-height: 1.3; min-height: 2.6em;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .ig-alt small { margin-top: auto; padding-top: 6px; font-size: 13px; font-weight: 600; color: var(--soluk); }
+  .ig-kare:hover .ig-alt small { color: #c24e1f; }
+  @media (max-width: 860px) { .ig-izgara { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+  @media (max-width: 480px) {
+    .ig-alt { padding: 10px 12px 12px; }
+    .ig-yazi { font-size: 14.5px; }
+    .ig-alt small { display: none; }
+    .ig-profil { flex-wrap: nowrap; gap: 10px; }
+    .ig-profil span { display: none; }
+  }
+  @media (max-width: 360px) { .ig-yazi { -webkit-line-clamp: 3; min-height: 3.9em; } .ig-profil b { font-size: 14px; } }
+  @media (prefers-reduced-motion: reduce) { .ig-kare, .ig-foto img { transition: none; } }
 
   /* ---------- Yaklaşan etkinlik ---------- */
   .yaklasan { padding: 60px 0 0; }
@@ -1223,16 +1253,17 @@
   <div class="kap">
     <div class="baslik">
       <div>
-        <span class="ust-etiket">Galeri</span>
+        <span class="ust-etiket">Galeri · Instagram</span>
         <h2>Instagram'dan kareler</h2>
       </div>
-      <p>Dans gecelerimizden, atölyelerimizden ve Moda'nın hikâyelerinden son paylaşımlarımız. Videoları burada izleyebilirsin.</p>
+      <p>Kitap söyleşilerinden yoga sabahlarına, swing gecelerinden Moda'nın hikâyelerine: son paylaşımlarımız. Bir kareye dokun, Instagram'da aç.</p>
+    </div>
+    <div class="ig-profil">
+      <img src="logo.jpg" alt="" width="44" height="44">
+      <div><b>@modaeventclub</b><span>Moda'da her hafta yeni bir şey 🌊</span></div>
+      <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener" class="dugme">Takip et</a>
     </div>
     <div class="ig-izgara" id="ig-izgara"></div>
-    <div style="text-align:center;margin-top:28px">
-      <button class="dugme" id="daha-fazla" type="button">Daha fazla göster</button>
-      <a href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener" class="dugme cizgili" style="color:var(--lacivert);margin-left:8px">Instagram'da takip et</a>
-    </div>
   </div>
 </section>
 
@@ -1511,55 +1542,36 @@
     a.addEventListener("click", () => document.querySelector(".linkler").classList.remove("acik")));
 
 
-  // INSTAGRAM GÖNDERİLERİ
-  // Yeni gönderi eklemek için linkini listenin EN ÜSTÜNE eklemek yeterli.
-  const gonderiler = [
-    "https://www.instagram.com/reel/DeumgIJsST7/", // 20 Eki · Moonli ile balkabağı workshop
-    "https://www.instagram.com/p/Detf4w7jSxb/",    // 20 Eki · Moda İskelesi'nin hikâyesi
-    "https://www.instagram.com/reel/DerD4yYqdy1/", // 19 Eki · Swing gecesi
-    "https://www.instagram.com/reel/DepKDV-tvvU/", // 18 Eki · Bir kahveye geldik...
-    "https://www.instagram.com/reel/DemkfH1KzAw/", // 17 Eki · Eylülde Moda'da bir akşam
-    "https://www.instagram.com/p/DeeeIS7jT1d/",    // 14 Eki · 17 Ekim parti duyurusu
-    "https://www.instagram.com/p/DeeMojzNYox/",    // 14 Eki · Nefes atölyesi duyurusu
-    "https://www.instagram.com/p/DecAP3hDYVi/"     // 13 Eki · 1920'lerin Moda İskelesi
+  // INSTAGRAM KARELERİ ("Instagram'dan kareler" bölümü)
+  // Yeni gönderi eklemek için listenin EN ÜSTÜNE bir satır ekle; 8 kare gösterilir (4x2 / telefonda 2x4).
+  //   link: gönderinin adresi · gorsel: img/ içinde 600x750 (4:5) kare · tarih: kartta görünen tarih
+  //   yazi: kısa açıklama · reel: video ise true · etkinlik: "YYYY-AA-GG" verilirse ve gelecekteyse "YAKINDA" rozeti çıkar
+  const IG = "https://www.instagram.com/";
+  const igKareler = [
+    { link: IG + "p/DgFQjULtksp/", gorsel: "img/ig-pilates-28-kasim.jpg", tarih: "28 Kasım", etkinlik: "2026-11-28", yazi: "Centro Reformer ile pilates" },
+    { link: IG + "gezimekanblog/reel/DgDOiFfs0Od/", gorsel: "img/ig-imza-reel.jpg", tarih: "22 Kasım", reel: true, yazi: "İmza gününden bir kesit" },
+    { link: IG + "reel/DgAfUl6tu2b/", gorsel: "img/ig-yoga-reel.jpg", tarih: "21 Kasım", reel: true, yazi: "MediRun ile yoga molası" },
+    { link: IG + "p/Df5FLheNBYT/", gorsel: "img/ig-gulseren-afis.jpg", tarih: "22 Kasım", yazi: "Gülseren Budayıcıoğlu" },
+    { link: IG + "p/DfhflsftA7l/", gorsel: "img/ig-sineklerin-tanrisi.jpg", tarih: "6 Aralık", etkinlik: "2026-12-06", yazi: "Sineklerin Tanrısı buluşması" },
+    { link: IG + "p/DfPiI9bKgI7/", gorsel: "img/ig-swing-7-kasim.jpg", tarih: "7 Kasım", yazi: "Swing Planet ile dans gecesi" },
+    { link: IG + "p/DfsDvbAtk9s/", gorsel: "img/ig-baris-manco.jpg", tarih: "Eski Moda", yazi: "1984: Barış Manço'nun evi" },
+    { link: IG + "reel/DfPmgEIKGLl/", gorsel: "img/ig-kulup-tanitim.jpg", tarih: "Moda Event Club", reel: true, yazi: "Her hafta yeni bir şey dene" }
   ];
-  const ilkGosterilen = window.innerWidth < 700 ? 2 : 3; // telefonda 2, bilgisayarda 3 (tek satır)
-  let gosterilen = 0;
-  const izgara = document.getElementById("ig-izgara");
-  const dahaFazla = document.getElementById("daha-fazla");
-
-  function gonderiEkle(adet) {
-    gonderiler.slice(gosterilen, gosterilen + adet).forEach(link => {
-      izgara.insertAdjacentHTML("beforeend", `
-        <blockquote class="instagram-media" data-instgrm-permalink="${link}?utm_source=ig_embed" data-instgrm-version="14">
-          <div class="ig-yer-tutucu">📸 Gönderi yükleniyor…<br><a href="${link}" target="_blank" rel="noopener">Instagram'da aç</a></div>
-        </blockquote>`);
-    });
-    gosterilen += adet;
-    if (gosterilen >= gonderiler.length) dahaFazla.style.display = "none";
-    if (window.instgrm) window.instgrm.Embeds.process();
+  {
+    const igBugun = new Date(); igBugun.setHours(0, 0, 0, 0);
+    const kac = 8;
+    document.getElementById("ig-izgara").innerHTML = igKareler.slice(0, kac).map(k => {
+      const yakinda = k.etkinlik && new Date(k.etkinlik + "T00:00") >= igBugun;
+      const rozetler = (k.reel ? `<span class="ig-rozet">▶ Reels</span>` : "")
+        + (yakinda ? `<span class="ig-rozet yakinda">YAKINDA</span>` : "");
+      return `<a class="ig-kare" href="${k.link}" target="_blank" rel="noopener"
+          aria-label="${k.tarih}: ${k.yazi}${k.reel ? " (video)" : ""}. Instagram'da yeni sekmede açılır.">
+        <span class="ig-foto"><img src="${k.gorsel}" alt="" loading="lazy" width="600" height="750">
+        ${rozetler ? `<span class="ig-ust">${rozetler}</span>` : ""}</span>
+        <span class="ig-alt"><time>${k.tarih}</time><span class="ig-yazi">${k.yazi}</span><small>Instagram'da gör →</small></span>
+      </a>`;
+    }).join("");
   }
-  gonderiEkle(ilkGosterilen);
-  dahaFazla.addEventListener("click", () => gonderiEkle(gonderiler.length));
-
-  // Instagram'ın resmi gömme kodu: sayfa açılışını yavaşlatmasın diye
-  // ancak ziyaretçi galeriye yaklaşınca yüklenir.
-  let igYuklendi = false;
-  const igYukle = () => {
-    if (igYuklendi) return;
-    igYuklendi = true;
-    const igKod = document.createElement("script");
-    igKod.async = true;
-    igKod.src = "https://www.instagram.com/embed.js";
-    document.body.appendChild(igKod);
-  };
-  if ("IntersectionObserver" in window) {
-    const igGozcu = new IntersectionObserver(g => {
-      if (g.some(x => x.isIntersecting)) { igYukle(); igGozcu.disconnect(); }
-    }, { rootMargin: "900px 0px" });
-    igGozcu.observe(izgara);
-  } else igYukle();
-  dahaFazla.addEventListener("click", igYukle);
 
   // ETKİNLİK LİSTESİ
   // Yeni etkinlik eklemek için bu listeye bir satır eklemek yeterli.
@@ -2299,6 +2311,7 @@
     [".one-metin > *", "fade-up", 100],
     [".hyrox-izgara > *", "fade-up", 120],
     [".kolaj > *", "zoom-in", 90],
+    [".ig-kare", "fade-up", 70],
     [".mekan-fotolar > *", "fade-up", 120],
     [".harita", "fade-right", 0],
     [".adres-kart", "fade-left", 0],
