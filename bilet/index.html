@@ -61,6 +61,9 @@
   .btn[disabled] { background: #857e70; color: #fff; cursor: not-allowed; }
   .btn:focus-visible, .link:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
   .hint { font-size: 13.5px; color: var(--muted); margin-top: 10px; text-align: center; line-height: 1.4; }
+  .note { margin-top: 14px; background: #e6eefb; border-left: 4px solid var(--blue); border-radius: 6px; padding: 10px 12px; font-size: 14.5px; line-height: 1.4; }
+  .note b { display: block; }
+  .note small { display: block; margin-top: 6px; font-size: 13px; color: var(--muted); }
   .lead { font-size: 17px; font-weight: 600; line-height: 1.35; text-align: center; margin-bottom: 14px; }
 
   /* Kupon */
@@ -97,7 +100,11 @@
       <div class="part">
         <p class="lead">Biletin ve iki hediyen hazır.<br>Almak için bizi Instagram'da takip et.</p>
         <a class="btn" id="takip" href="https://www.instagram.com/modaeventclub/" target="_blank" rel="noopener">Takip et, biletini al</a>
-        <p class="hint">@modaeventclub sayfası açılır. Takip edip bu sayfaya geri dön, biletin seni bekliyor olacak.</p>
+        <div class="note">
+          <b>Takip ettikten sonra bu sayfaya geri dön.</b>
+          Biletin burada seni bekliyor olacak.
+          <small>iPhone'da Instagram uygulaması açılırsa, sol üst köşedeki ◀ geri yazısına dokun.</small>
+        </div>
       </div>
     </div>
     <p class="foot">Etkinliğimiz <b>ücretsizdir.</b></p>
